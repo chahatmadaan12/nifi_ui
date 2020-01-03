@@ -1,20 +1,21 @@
 package com.applicate.nifiui.service;
 
+import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 
-import com.applicate.nifiui.dbmanager.dao.beans.Connection;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
+import static com.applicate.nifiui.config.constants.ConnectionConstants.*;
 @Component
 public class SftpConnectionVerifier implements ConnectionVerificationService{
 
 	@Override
-	public boolean verify(Connection connection) throws NumberFormatException, JSchException {
+	public boolean verify(JSONObject connection) throws NumberFormatException, JSchException {
 		JSch jSch = new JSch();
-	    Session sftpSession = jSch.getSession(connection.getParam1(), connection.getParam2(), Integer.parseInt(connection.getParam3()));
+	    Session sftpSession = jSch.getSession(connection.getString(USER_NAME), connection.getString(HOST), Integer.parseInt(connection.getString(PORT)));
 	    sftpSession.setConfig("StrictHostKeyChecking","no");
-	    sftpSession.setPassword(connection.getParam4());
+	    sftpSession.setPassword(connection.getString(PASSWORD));
 	    sftpSession.connect();
 	    //sftpSession.openChannel(connection.getType());
 		return sftpSession.isConnected();

@@ -7,8 +7,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class StringUtils {
-  
-	public static String replaceDynamicValues(String str,JSONObject dataObj) throws JSONException{
+
+	public static String replaceDynamicValues(String str, JSONObject dataObj) throws JSONException {
 		Pattern pattern = Pattern.compile("\\{\\{[^}]*}}", Pattern.CASE_INSENSITIVE);
 		Matcher matcher = pattern.matcher(str);
 		while (matcher.find()) {
@@ -19,13 +19,13 @@ public class StringUtils {
 			String[] keyArr = key.split(":");
 			for (String keystr : keyArr) {
 				value = dataObj.optString(keystr);
-				if(!keystr.contains("'") && "".equals(value)){
+				if (!keystr.contains("'") && "".equals(value)) {
 					continue;
-				}else{
-					if(!"".equals(value)){
+				} else {
+					if (!"".equals(value)) {
 						break;
 					}
-					if(keystr.contains("'")){
+					if (keystr.contains("'")) {
 						value = keystr.replaceAll(Pattern.quote("'"), "");
 						break;
 					}
@@ -35,5 +35,14 @@ public class StringUtils {
 		}
 		return str;
 	}
-	
+
+	public static boolean isEmpty(String content) {
+		return content == null || content.isEmpty();
+	}
+
+	public static boolean isValidString(String value) {
+		return !isEmpty(value) && !value.equals("null") && !value.equals("\"\"")
+				&& !value.equalsIgnoreCase("undefined");
+	}
+
 }

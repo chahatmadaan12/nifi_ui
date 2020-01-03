@@ -1,6 +1,6 @@
 package com.applicate.nifiui.controller;
 
-import java.util.List;
+import java.util.Optional;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.applicate.nifiui.configurations.BeanConfig;
-import com.applicate.nifiui.configurations.ConnectionConfiguration.Connections;
-import com.applicate.nifiui.dbmanager.dao.beans.Connection;
-import com.applicate.nifiui.dbmanager.dao.dboperation.ConnectionDAO;
-import com.applicate.nifiui.service.ConnectionVerifierFactory;
+import com.applicate.nifiui.service.ConnectionsControllerService;
 
 @RestController
 @RequestMapping("/connection")
@@ -27,64 +24,39 @@ public class ConnectionsController{
 
 	AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(BeanConfig.class);
 	@Autowired
-	private ConnectionDAO connectionDAO;
-	@Autowired
-	private ConnectionVerifierFactory connectionVerifierFactory;
-	Connections con=null;
+	private ConnectionsControllerService connectionsControllerService;
 
 	@RequestMapping(value= {"","^((?!/getConnections|/putConnection).)*$"})
 	public ResponseEntity<String> connenctionDefault() {
 		return new ResponseEntity<String>("Service Unavailable",HttpStatus.SERVICE_UNAVAILABLE);
 	}
 	
-	@RequestMapping(value="/getConnections",method=RequestMethod.GET,produces = MediaType.TEXT_PLAIN_VALUE)
-	public String getConnections(){ 
-		if(con==null) {
-			return "No Connection Found";
-		}
-		return con.getConnection();
+	@RequestMapping(value= {"/getConnections/{id}","/getConnections"},method=RequestMethod.GET,produces = MediaType.TEXT_PLAIN_VALUE)
+	public String getConnections(@PathVariable(value="id")Optional<String> id){ 
+		String id1 = null;
+		if(id.isPresent())
+			id1=id.get();
+		return "{\"Connections\":"+connectionsControllerService.getConnections(id1,null).toString()+"}";
 	}
 
-	@RequestMapping(value="/putConnection", method=RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_VALUE,produces =MediaType.TEXT_PLAIN_VALUE)
+	@RequestMapping(value="/putConnection", method=RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.TEXT_PLAIN_VALUE)
 	public @ResponseBody String putConnections(@RequestBody String json){
-		con=(Connections)ctx.getBean("sftp");
-		con.setId("sftp1");
-		con.setParam1("param1");
-		con.setParam2("param2");
-		con.setParam3("param3");
-		con.setParam4("param4");
-		con.setParam5("param5");
-		con.setParam6("param6");
-		con.setParam7("param7");
-		return "Connection Created<<<"+json+">>>";
+		return "Connection Created<<<"+connectionsControllerService.persistConnection(new JSONObject(json)).toString()+">>>";
+	}
+	
+	@RequestMapping(value="/putConnection/{id}", method=RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.TEXT_PLAIN_VALUE)
+	public @ResponseBody String putConnections(@RequestBody String json,@PathVariable(value="id") String id){
+		return "<<<"+connectionsControllerService.updateConnection(new JSONObject(json),id).toString()+">>>";
 	}
 
 	@RequestMapping(value="/verifyConnection/{id}",method=RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> verifyConnection(@PathVariable(value="id") String id){ 
-		Connection connection = connectionDAO.findById(id).get();
-		boolean verify=false;
-		try {
-			verify = connectionVerifierFactory.getConnectionVerifier(connection.getType()).verify(connection);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<>(new JSONObject().put("verify", verify).toString(), HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-		return new ResponseEntity<>(new JSONObject().put("verify", verify).toString(), HttpStatus.OK);
+		return connectionsControllerService.verifyConnection(id);
 	}
 	
-	@RequestMapping(value="/verifyConnections/{lob}",method=RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Object> verifyConnections(@PathVariable(value="lob") String lob){ 
-        List<Connection> connectionList = connectionDAO.getConnectionBasedOnLob(lob);
-        JSONObject response = new JSONObject();
-        for (Connection connection : connectionList) {
-        	try {
-        		response.put(connection.getId(), new JSONObject().put("verify",  connectionVerifierFactory.getConnectionVerifier(connection.getType()).verify(connection)));
-			} catch (Exception e) {
-				e.printStackTrace();
-			    response.put(connection.getId(), new JSONObject().put("verify", false).put("message", e.getMessage()));
-			}
-		}
-		return new ResponseEntity<Object>(response.toString(),HttpStatus.OK);
+	@RequestMapping(value="/deleteConnection/{id}", method=RequestMethod.GET,produces = MediaType.TEXT_PLAIN_VALUE)
+	public @ResponseBody String deleteConnections(@PathVariable(value="id") String id){
+		return "<<<"+connectionsControllerService.deleteConnection(id).toString()+">>>";
 	}
 
 }

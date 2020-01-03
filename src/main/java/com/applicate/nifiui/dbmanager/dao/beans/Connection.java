@@ -7,8 +7,6 @@ import javax.persistence.Table;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-@Component
-@Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @Entity
 @Table(name="Connection")
 public class Connection {
@@ -107,9 +105,9 @@ public class Connection {
 
 	@Override
 	public String toString() {
-		return "Connection [id=" + id + ", lob=" + lob + ", type=" + type + ", param1=" + param1 + ", param2=" + param2
-				+ ", param3=" + param3 + ", param4=" + param4 + ", param5=" + param5 + ", param6=" + param6
-				+ ", param7=" + param7 + ", active=" + active + "]";
+		return "{ \"id\":\"" + id + "\", \"lob\":\"" + lob + "\", \"type\":\"" + type + "\", \"param1\":\"" + param1 + "\", \"param2\":\"" + param2
+				+ "\", \"param3\":\"" + param3 + "\", \"param4\":\"" + param4 + "\", \"param5\":\"" + param5 + "\", \"param6\":\"" + param6
+				+ "\",\"param7\":\"" + param7 + "\", \"active\":" + active + "}";
 	}
 	
 

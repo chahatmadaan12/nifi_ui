@@ -1,12 +1,18 @@
 package com.applicate.nifiui.service;
 
+import static com.applicate.nifiui.config.constants.ConnectionConstants.DB_NAME;
+import static com.applicate.nifiui.config.constants.ConnectionConstants.HOST;
+import static com.applicate.nifiui.config.constants.ConnectionConstants.PASSWORD;
+import static com.applicate.nifiui.config.constants.ConnectionConstants.PORT;
+import static com.applicate.nifiui.config.constants.ConnectionConstants.TYPE;
+import static com.applicate.nifiui.config.constants.ConnectionConstants.USER_NAME;
+
 import java.sql.DriverManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 
-import com.applicate.nifiui.dbmanager.dao.beans.Connection;
 import com.applicate.utils.StringUtils;
 import com.jcraft.jsch.JSchException;
 
@@ -67,26 +73,26 @@ public class SQLConnectionVerifier implements ConnectionVerificationService {
 	}
 
 	@Override
-	public boolean verify(Connection connection) throws NumberFormatException, JSchException {
-		String type = connection.getType(),dburl = null;
+	public boolean verify(JSONObject connection) throws NumberFormatException, JSchException {
+		String type = connection.getString(TYPE),dburl = null;
 		type = type.toUpperCase();
 		switch (SqlType.valueOf(type)) {
 		case MSSQL:
-            dburl = SqlType.MSSQL.createDbUrl(connection.getParam2(), connection.getParam3(), connection.getParam5(), false, null);
+            dburl = SqlType.MSSQL.createDbUrl(connection.getString(HOST), connection.getString(PORT), connection.getString(DB_NAME), false, null);
 			break;
 		case POSTGRES:
-			dburl = SqlType.POSTGRES.createDbUrl(connection.getParam2(), connection.getParam3(), connection.getParam5(), false, null);
+			dburl = SqlType.POSTGRES.createDbUrl(connection.getString(HOST), connection.getString(PORT), connection.getString(DB_NAME), false, null);
 			break;
 		case MYSQL:
-			dburl = SqlType.MYSQL.createDbUrl(connection.getParam2(), connection.getParam3(), connection.getParam5(), false, null);
+			dburl = SqlType.MYSQL.createDbUrl(connection.getString(HOST), connection.getString(PORT), connection.getString(DB_NAME), false, null);
 			break;
 		case CLICKHOUSE:
-			dburl = SqlType.CLICKHOUSE.createDbUrl(connection.getParam2(), connection.getParam3(), connection.getParam5(), false, null);
+			dburl = SqlType.CLICKHOUSE.createDbUrl(connection.getString(HOST), connection.getString(PORT), connection.getString(DB_NAME), false, null);
 			break;
 		default:
 			break;
 		}
-		try(java.sql.Connection con = DriverManager.getConnection(dburl,connection.getParam1(),connection.getParam4())){
+		try(java.sql.Connection con = DriverManager.getConnection(dburl,connection.getString(USER_NAME),connection.getString(PASSWORD))){
 			return true;
 		}catch (Exception e) {
 			e.printStackTrace();

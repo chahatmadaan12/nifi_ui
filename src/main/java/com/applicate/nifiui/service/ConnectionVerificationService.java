@@ -1,9 +1,9 @@
 package com.applicate.nifiui.service;
 
-import com.applicate.nifiui.dbmanager.dao.beans.Connection;
+import org.json.JSONObject;
 
 public interface ConnectionVerificationService {
 	
-	boolean verify(Connection connection) throws Exception;
+	boolean verify(JSONObject unWrappedConnection) throws Exception;
 
 }
