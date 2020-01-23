@@ -88,7 +88,9 @@ public class DefaultConfigurationProvider extends AbstractConfigurationProvider 
 
 	private ConfigurationReader[] getConfigurationReaders() {
 		ConfigurationReader[] reader = {
-				helper.createCommonJsonReader(Configuration.YAML.CONNECTION_PARAM,"configs/{{clientName}}/connectionParamMapping.yaml") 
+				helper.createCommonJsonReader(Configuration.YAML.CONNECTION_PARAM,"configs/{{clientName}}/connectionParamMapping.yaml"),
+				helper.createCommonJsonReader(Configuration.YAML.CONSTANTS,"configs/{{clientName}}/constants.yaml") 
+				
 		};
 		return reader;
 	}

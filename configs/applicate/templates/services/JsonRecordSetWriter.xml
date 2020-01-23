@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<template encoding-version="1.2">
+	<description></description>
+	<groupId>@@Processor_Group_Id@@</groupId>
+	<name>JSONRecordSetWriter</name>
+	<snippet>
+		<controllerServices>
+			<id>3bc91b65-0a9a-3ca3-0000-000000000000</id>
+			<parentGroupId>8c8cc2cd-1d8d-3ca3-0000-000000000000</parentGroupId>
+			<bundle>
+				<artifact>nifi-record-serialization-services-nar</artifact>
+				<group>org.apache.nifi</group>
+				<version>1.9.2</version>
+			</bundle>
+			<comments></comments>
+			<descriptors>
+				<entry>
+					<key>Schema Write Strategy</key>
+					<value>
+						<name>Schema Write Strategy</name>
+					</value>
+				</entry>
+				<entry>
+					<key>schema-cache</key>
+					<value>
+						<identifiesControllerService>org.apache.nifi.serialization.RecordSchemaCacheService
+						</identifiesControllerService>
+						<name>schema-cache</name>
+					</value>
+				</entry>
+				<entry>
+					<key>schema-access-strategy</key>
+					<value>
+						<name>schema-access-strategy</name>
+					</value>
+				</entry>
+				<entry>
+					<key>schema-registry</key>
+					<value>
+						<identifiesControllerService>org.apache.nifi.schemaregistry.services.SchemaRegistry
+						</identifiesControllerService>
+						<name>schema-registry</name>
+					</value>
+				</entry>
+				<entry>
+					<key>schema-name</key>
+					<value>
+						<name>schema-name</name>
+					</value>
+				</entry>
+				<entry>
+					<key>schema-version</key>
+					<value>
+						<name>schema-version</name>
+					</value>
+				</entry>
+				<entry>
+					<key>schema-branch</key>
+					<value>
+						<name>schema-branch</name>
+					</value>
+				</entry>
+				<entry>
+					<key>schema-text</key>
+					<value>
+						<name>schema-text</name>
+					</value>
+				</entry>
+				<entry>
+					<key>Date Format</key>
+					<value>
+						<name>Date Format</name>
+					</value>
+				</entry>
+				<entry>
+					<key>Time Format</key>
+					<value>
+						<name>Time Format</name>
+					</value>
+				</entry>
+				<entry>
+					<key>Timestamp Format</key>
+					<value>
+						<name>Timestamp Format</name>
+					</value>
+				</entry>
+				<entry>
+					<key>Pretty Print JSON</key>
+					<value>
+						<name>Pretty Print JSON</name>
+					</value>
+				</entry>
+				<entry>
+					<key>suppress-nulls</key>
+					<value>
+						<name>suppress-nulls</name>
+					</value>
+				</entry>
+				<entry>
+					<key>output-grouping</key>
+					<value>
+						<name>output-grouping</name>
+					</value>
+				</entry>
+				<entry>
+					<key>compression-format</key>
+					<value>
+						<name>compression-format</name>
+					</value>
+				</entry>
+				<entry>
+					<key>compression-level</key>
+					<value>
+						<name>compression-level</name>
+					</value>
+				</entry>
+			</descriptors>
+			<name>JsonRecordSetWriter</name>
+			<persistsState>false</persistsState>
+			<properties>
+				<entry>
+					<key>Schema Write Strategy</key>
+				</entry>
+				<entry>
+					<key>schema-cache</key>
+				</entry>
+				<entry>
+					<key>schema-access-strategy</key>
+				</entry>
+				<entry>
+					<key>schema-registry</key>
+				</entry>
+				<entry>
+					<key>schema-name</key>
+				</entry>
+				<entry>
+					<key>schema-version</key>
+				</entry>
+				<entry>
+					<key>schema-branch</key>
+				</entry>
+				<entry>
+					<key>schema-text</key>
+				</entry>
+				<entry>
+					<key>Date Format</key>
+				</entry>
+				<entry>
+					<key>Time Format</key>
+				</entry>
+				<entry>
+					<key>Timestamp Format</key>
+				</entry>
+				<entry>
+					<key>Pretty Print JSON</key>
+				</entry>
+				<entry>
+					<key>suppress-nulls</key>
+				</entry>
+				<entry>
+					<key>output-grouping</key>
+				</entry>
+				<entry>
+					<key>compression-format</key>
+				</entry>
+				<entry>
+					<key>compression-level</key>
+				</entry>
+			</properties>
+			<state>ENABLED</state>
+			<type>org.apache.nifi.json.JsonRecordSetWriter</type>
+		</controllerServices>
+	</snippet>
+</template>

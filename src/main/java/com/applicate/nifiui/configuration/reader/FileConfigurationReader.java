@@ -19,7 +19,7 @@ public class FileConfigurationReader<T> extends AbstractConfigurationReader<T> i
 
 	@Override
 	public T read(String clientName) {
-		File file = new File(FileUtils.getAbsoluteConfigurationPath(getFilePath(), clientName));
+		File file = new File(FileUtils.getAbsoluteConfigurationPath(getFilePath(),"clientName", clientName));
 		T data = readFromFile(file);
 		return data;
 	}

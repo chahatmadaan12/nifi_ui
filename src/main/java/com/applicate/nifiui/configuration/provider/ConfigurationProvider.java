@@ -8,4 +8,6 @@ public interface ConfigurationProvider {
 	
 	JSONObject getConnectionParam();
 	
+	String getStringConstants(String key);
+	
 }

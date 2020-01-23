@@ -11,14 +11,14 @@ import static com.applicate.nifiui.config.constants.ConnectionConstants.*;
 public class SftpConnectionVerifier implements ConnectionVerificationService{
 
 	@Override
-	public boolean verify(JSONObject connection) throws NumberFormatException, JSchException {
+	public JSONObject verify(JSONObject connection) throws NumberFormatException, JSchException {
 		JSch jSch = new JSch();
 	    Session sftpSession = jSch.getSession(connection.getString(USER_NAME), connection.getString(HOST), Integer.parseInt(connection.getString(PORT)));
 	    sftpSession.setConfig("StrictHostKeyChecking","no");
 	    sftpSession.setPassword(connection.getString(PASSWORD));
 	    sftpSession.connect();
 	    //sftpSession.openChannel(connection.getType());
-		return sftpSession.isConnected();
+		return new JSONObject().put("verify",sftpSession.isConnected());
 	}
 
 }

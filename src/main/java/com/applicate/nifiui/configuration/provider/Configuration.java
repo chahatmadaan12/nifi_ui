@@ -4,6 +4,7 @@ public interface Configuration<T> {
 
 	interface YAML {
 		String CONNECTION_PARAM = "connectionParamMappingYaml";
+		String CONSTANTS="constantsYaml";
 	}
 
 	interface JSON {

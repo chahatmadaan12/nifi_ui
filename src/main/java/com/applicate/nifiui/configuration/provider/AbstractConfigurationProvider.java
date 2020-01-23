@@ -59,5 +59,10 @@ public abstract class AbstractConfigurationProvider implements ConfigurationProv
 	public JSONObject getConnectionParam() {
 		return getClientOrGlobalJsonHolder(Configuration.YAML.CONNECTION_PARAM);
 	}
+	
+	@Override
+	public String getStringConstants(String key) {
+		return getClientOrGlobalJsonHolder(Configuration.YAML.CONSTANTS).optString(key);
+	}
 
 }

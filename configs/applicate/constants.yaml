@@ -1,0 +1,10 @@
+# database driver jar names
+mysql_driver_jar_name : "mysql-connector-java-8.0.15.jar"
+mssql_driver_jar_name : ""
+clickhouse_driver_jar_name : ""
+postgres_driver_jar_name : ""
+
+# processor-group-id for client
+Processor_Group_Id : "ae265054-016f-1000-f1ae-5ef6d3b0f115"
+Global_Processor_Group_Id : "28065892-016c-1000-5653-27df94e6088b"
+serverURL : "http://localhost:9090"

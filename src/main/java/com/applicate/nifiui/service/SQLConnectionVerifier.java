@@ -1,11 +1,6 @@
 package com.applicate.nifiui.service;
 
-import static com.applicate.nifiui.config.constants.ConnectionConstants.DB_NAME;
-import static com.applicate.nifiui.config.constants.ConnectionConstants.HOST;
-import static com.applicate.nifiui.config.constants.ConnectionConstants.PASSWORD;
-import static com.applicate.nifiui.config.constants.ConnectionConstants.PORT;
-import static com.applicate.nifiui.config.constants.ConnectionConstants.TYPE;
-import static com.applicate.nifiui.config.constants.ConnectionConstants.USER_NAME;
+import static com.applicate.nifiui.config.constants.ConnectionConstants.*;
 
 import java.sql.DriverManager;
 
@@ -64,40 +59,54 @@ public class SQLConnectionVerifier implements ConnectionVerificationService {
 
 		private JSONObject createDataObject(String host, String port, String database) throws JSONException {
 			JSONObject data = new JSONObject();
-			data.put("host", host);
-			data.put("port", port);
-			data.put("database", database);
+			data.put(HOST, host);
+			data.put(PORT, port);
+			data.put(DATABASE, database);
 			return data;
 		}
 
 	}
 
 	@Override
-	public boolean verify(JSONObject connection) throws NumberFormatException, JSchException {
+	public JSONObject verify(JSONObject connection) throws NumberFormatException, JSchException {
 		String type = connection.getString(TYPE),dburl = null;
+		JSONObject response = new JSONObject();
 		type = type.toUpperCase();
 		switch (SqlType.valueOf(type)) {
 		case MSSQL:
             dburl = SqlType.MSSQL.createDbUrl(connection.getString(HOST), connection.getString(PORT), connection.getString(DB_NAME), false, null);
+            response.put(DRIVER_JAR_KEY, "mssql_driver_jar_name")
+		            .put(DB_URL, dburl)
+					.put(DRIVER_CLASS, SqlType.valueOf(type).getDriverClass());
 			break;
 		case POSTGRES:
 			dburl = SqlType.POSTGRES.createDbUrl(connection.getString(HOST), connection.getString(PORT), connection.getString(DB_NAME), false, null);
+			response.put(DRIVER_JAR_KEY, "postgres_driver_jar_name")
+					.put(DB_URL, dburl)
+					.put(DRIVER_CLASS, SqlType.valueOf(type).getDriverClass());
 			break;
 		case MYSQL:
 			dburl = SqlType.MYSQL.createDbUrl(connection.getString(HOST), connection.getString(PORT), connection.getString(DB_NAME), false, null);
+			response.put(DRIVER_JAR_KEY, "mysql_driver_jar_name")
+					.put(DB_URL, dburl)
+					.put(DRIVER_CLASS, SqlType.valueOf(type).getDriverClass());
 			break;
 		case CLICKHOUSE:
 			dburl = SqlType.CLICKHOUSE.createDbUrl(connection.getString(HOST), connection.getString(PORT), connection.getString(DB_NAME), false, null);
+			response.put(DRIVER_JAR_KEY, "clickhouse_driver_jar_name")
+					.put(DB_URL, dburl)
+					.put(DRIVER_CLASS, SqlType.valueOf(type).getDriverClass());
 			break;
 		default:
 			break;
 		}
 		try(java.sql.Connection con = DriverManager.getConnection(dburl,connection.getString(USER_NAME),connection.getString(PASSWORD))){
-			return true;
+			response.put("verify", true);
+			return response;
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
-		return false;
+		return response.put("verify", false);
 	}
 
 }

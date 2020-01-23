@@ -3,16 +3,13 @@ package com.applicate.nifiui.dbmanager.dao.beans;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 @Entity
 @Table(name="Connection")
 public class Connection {
+	
 	@Id
 	private String id;
-	private String lob,type,param1,param2,param3,param4,param5,param6,param7;
+	private String lob,type,param1,param2,param3,param4,param5,param6,param7,param8;
 	private boolean active;
 
 	public String getId() {
@@ -22,7 +19,7 @@ public class Connection {
 	public void setId(String id) {
 		this.id = id;
 	}
-
+	
 	public String getType() {
 		return type;
 	}
@@ -103,11 +100,19 @@ public class Connection {
 		this.param7 = param7;
 	}
 
+	public String getParam8() {
+		return param8;
+	}
+
+	public void setParam8(String param8) {
+		this.param8 = param8;
+	}
+
 	@Override
 	public String toString() {
 		return "{ \"id\":\"" + id + "\", \"lob\":\"" + lob + "\", \"type\":\"" + type + "\", \"param1\":\"" + param1 + "\", \"param2\":\"" + param2
 				+ "\", \"param3\":\"" + param3 + "\", \"param4\":\"" + param4 + "\", \"param5\":\"" + param5 + "\", \"param6\":\"" + param6
-				+ "\",\"param7\":\"" + param7 + "\", \"active\":" + active + "}";
+				+ "\",\"param7\":\"" + param7 + "\",\"param8\":\"" + param8 + "\", \"active\":" + active + "}";
 	}
 	
 

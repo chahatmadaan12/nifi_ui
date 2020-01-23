@@ -108,14 +108,31 @@ public class FileUtils {
 		return configLocation+relativePath;
 	}
 
-	public static String getAbsoluteConfigurationPath(String relativePath, String clientName) {
+	public static String getAbsoluteConfigurationPath(String relativePath,String key, String clientName) {
 		if (!relativePath.startsWith("/")) {
 			relativePath = "/" + relativePath;
 		}
 		JSONObject clientData = new JSONObject();
-		clientData.put("clientName", clientName);
+		clientData.put(key, clientName);
 		try {
 			String absolutePath = StringUtils.replaceDynamicValues(getAbsolutePath(relativePath), clientData);
+			if (absolutePath.contains("{") || absolutePath.contains("}")) {
+				throw new RuntimeException("file path contains { }");
+			}
+			return absolutePath;
+		} catch (JSONException e) {
+			throw e;
+		}
+	}
+	
+	public static String getPathWithReplaceValue(String relativePath,String key, String clientName) {
+		if (!relativePath.startsWith("/")) {
+			relativePath = "/" + relativePath;
+		}
+		JSONObject clientData = new JSONObject();
+		clientData.put(key, clientName);
+		try {
+			String absolutePath = StringUtils.replaceDynamicValues(relativePath, clientData);
 			if (absolutePath.contains("{") || absolutePath.contains("}")) {
 				throw new RuntimeException("file path contains { }");
 			}

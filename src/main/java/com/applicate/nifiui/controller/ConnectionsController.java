@@ -4,7 +4,6 @@ import java.util.Optional;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -15,14 +14,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.applicate.nifiui.configurations.BeanConfig;
 import com.applicate.nifiui.service.ConnectionsControllerService;
 
 @RestController
 @RequestMapping("/connection")
 public class ConnectionsController{
 
-	AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(BeanConfig.class);
 	@Autowired
 	private ConnectionsControllerService connectionsControllerService;
 
@@ -41,7 +38,7 @@ public class ConnectionsController{
 
 	@RequestMapping(value="/putConnection", method=RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.TEXT_PLAIN_VALUE)
 	public @ResponseBody String putConnections(@RequestBody String json){
-		return "Connection Created<<<"+connectionsControllerService.persistConnection(new JSONObject(json)).toString()+">>>";
+		return connectionsControllerService.persistConnection(new JSONObject(json)).toString();
 	}
 	
 	@RequestMapping(value="/putConnection/{id}", method=RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.TEXT_PLAIN_VALUE)
