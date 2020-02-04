@@ -28,6 +28,13 @@ public class TemplateDetailsController {
 		return templateDetailsService.persistTemplateDetails(new JSONObject(json)).toString();
 	}
 	
+	@RequestMapping(value = {"/get","/get/{lob}"},method = RequestMethod.GET,produces = MediaType.TEXT_PLAIN_VALUE)
+	public @ResponseBody String getTemplateDetails(@PathVariable(value = "lob") Optional<String> lob) {
+		if(lob.isPresent())
+			return templateDetailsService.getTemplateDetails(lob.get()).toString();
+		return templateDetailsService.getTemplateDetails(null).toString();
+	}
+	
 	@RequestMapping(value = "/delete/{id}",method = RequestMethod.GET,produces = MediaType.TEXT_PLAIN_VALUE)
 	public @ResponseBody String deleteTemplateDetails(@PathVariable(value = "id") String id) {
 		return templateDetailsService.deleteTemplateDetails(id);

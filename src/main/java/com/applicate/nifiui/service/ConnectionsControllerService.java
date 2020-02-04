@@ -1,13 +1,18 @@
 package com.applicate.nifiui.service;
 
-import static com.applicate.nifiui.config.constants.ConnectionConstants.*;
+import static com.applicate.nifiui.config.constants.ConnectionConstants.DB_URL;
+import static com.applicate.nifiui.config.constants.ConnectionConstants.DRIVER_CLASS;
+import static com.applicate.nifiui.config.constants.ConnectionConstants.DRIVER_JAR_KEY;
+import static com.applicate.nifiui.config.constants.ConnectionConstants.DRIVER_LOCATION;
+import static com.applicate.nifiui.config.constants.ConnectionConstants.SQL_TYPE;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +27,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class ConnectionsControllerService {
+	
+	private Logger log = LoggerFactory.getLogger(ConnectionsControllerService.class);
 	
 	@Autowired
 	private ConnectionMapperService connectionMapperService;
@@ -50,8 +57,9 @@ public class ConnectionsControllerService {
 			wrappedConnection.put("lob", lob);
 			obj = om.readValue(wrappedConnection.toString(), Connection.class);
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("Exception happend while persisting the connection",e);
 		}
+		log.info("connections persisted for "+lob);
 		return connectionDAO.save(obj);
 	}
 
@@ -68,6 +76,7 @@ public class ConnectionsControllerService {
 	}
 
 	public List<JSONObject> getConnections(String id,String lob) {
+		lob = lob!=null ? lob : sessionServices.getLob();
 		List<Connection> ls = new ArrayList<Connection>();
 		if(id!=null)
 		    ls = connectionDAO.getConnectionIfPersent(connectionDAO, id);
@@ -75,6 +84,16 @@ public class ConnectionsControllerService {
 			ls=connectionDAO.getConnectionBasedOnLob(lob);
 		else
 			ls=(List<Connection>) connectionDAO.findAll();
+		log.info("got connections for "+lob);
+		return getMappedData(ls);
+	}
+	
+	public List<JSONObject> getVerifiedConnections(String lob) {
+		lob = lob!=null ? lob : sessionServices.getLob();
+		List<Connection> ls = new ArrayList<Connection>();
+		if(lob!=null)
+			ls=connectionDAO.getVerifiedConnection(lob);
+		log.info("got verified connections for "+lob);
 		return getMappedData(ls);
 	}
 	
@@ -85,7 +104,7 @@ public class ConnectionsControllerService {
 				JSONObject json = new JSONObject(om.writeValueAsString(connection));
 				newList.add(connectionMapperService.getUnWrappedConnection(json, connection.getLob(), connection.getType()));
 			} catch (JsonProcessingException e) {
-				e.printStackTrace();
+				log.error("Exception happend while wrapping the connection",e);
 			}
 		}
 		return newList;
@@ -107,8 +126,8 @@ public class ConnectionsControllerService {
 				connectionDAO.save(connection);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<>(new JSONObject().put("verify", verify.getBoolean("verify")).toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+			log.error("Exception happend while verifing the connection",e);
+			return new ResponseEntity<>(new JSONObject().put("verify", false).put("message", e.getMessage()).toString(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<>(new JSONObject().put("verify", verify.getBoolean("verify")).toString(), HttpStatus.OK);
 	}
@@ -121,14 +140,16 @@ public class ConnectionsControllerService {
 		}
 		Connection obj=null;
 		try {
+			connection.setActive(false);
 			putSqlSpecificFields(json, connection.getType(), connection.getLob());
 			JSONObject wrappedConnection = connectionMapperService.getWrappedConnection(json, connection.getLob(), connection.getType());
 			JSONObject connJson = new JSONObject(om.writeValueAsString(connection));
 			wrappedConnection = JSONUtils.mergeJSON(connJson,wrappedConnection);
 			obj = om.readValue(wrappedConnection.toString(), Connection.class);
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("Exception happend while updating the connection",e);
 		}
+		log.info("connections updated for connection id "+id);
 		return connectionDAO.save(obj).toString();
 	}
 

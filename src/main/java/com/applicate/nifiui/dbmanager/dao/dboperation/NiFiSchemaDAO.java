@@ -16,7 +16,7 @@ public interface NiFiSchemaDAO extends CrudRepository<NiFiSchema, NiFiSchema>{
 	@Query("SELECT s from NiFiSchema s WHERE s.lob =:lob and s.schemaName =:schemaName order by schemaName")
 	public List<NiFiSchema> getNiFiSchemaBasedOnSchemaNameAndLob(@Param("lob") String lob,@Param("schemaName") String schemaName);
 	
-	@Query("SELECT distinct s.schemaName from NiFiSchema s WHERE s.lob =:lob order by schemaName")
+	@Query("SELECT s.schemaName from NiFiSchema s WHERE s.lob =:lob group by schemaName order by schemaName")
 	public List<String> getTableNames(@Param("lob") String lob);
 
 }

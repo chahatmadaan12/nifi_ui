@@ -106,7 +106,7 @@
                     </value>
                 </entry>
             </descriptors>
-            <name>@@DBService_Name@@</name>
+            <name>@@Template_Name@@</name>
             <persistsState>false</persistsState>
             <properties>
                 <entry>

@@ -2,9 +2,14 @@ package com.applicate.nifiui.configuration.parser;
 
 import java.io.File;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.applicate.utils.FileUtils;
 
 public abstract class AbstractParser<T> implements Parser<T> {
+
+	private Logger log = LoggerFactory.getLogger(AbstractParser.class);
 	
     private final String parserName = getClass().getSimpleName();
 
@@ -48,7 +53,7 @@ public abstract class AbstractParser<T> implements Parser<T> {
                 throw new Exception(e.getMessage());
             }
         } else {
-           System.err.print(createLoggerMessage( "File '<{}>' is not present setting empty data")+source);
+           log.error(createLoggerMessage( "File '<{}>' is not present setting empty data"),source);
         }
         convertToSpecificFormat(content);
         return this;

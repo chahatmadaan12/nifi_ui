@@ -4,6 +4,6 @@ import org.json.JSONObject;
 
 public interface ConnectionVerificationService {
 	
-	JSONObject verify(JSONObject unWrappedConnection) throws Exception;
+	JSONObject verify(JSONObject connection) throws Exception;
 
 }

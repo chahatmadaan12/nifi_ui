@@ -898,7 +898,7 @@
                     </entry>
                 </properties>
                 <runDurationMillis>0</runDurationMillis>
-                <schedulingPeriod>3600 sec</schedulingPeriod>
+                <schedulingPeriod>0 sec</schedulingPeriod>
                 <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
                 <yieldDuration>1 sec</yieldDuration>
             </config>

@@ -7,17 +7,14 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.annotation.PostConstruct;
-
-import org.apache.http.entity.ContentType;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.MediaType;
@@ -35,9 +32,12 @@ import com.applicate.nifiui.helper.TemplateHelper;
 import com.applicate.nifiui.helper.TemplateHelper.TemplateKeys;
 import com.applicate.utils.FileUtils;
 import com.applicate.utils.RestClient;
+import com.applicate.utils.StringUtils;
 
 @Service
 public class NiFiTemplateService {
+
+	private Logger log = LoggerFactory.getLogger(NiFiTemplateService.class);
 	
 	private static final String templatePath = FileUtils.getAbsolutePath("/configs/applicate/templates/"),REGEX = "@@[^@]*@@",REPLACE="@@";;
 
@@ -65,6 +65,7 @@ public class NiFiTemplateService {
 		Connection loader = connectionDAO.findById(templateDetails.getLoaderId()).get();
 		String response = null, processGroupId = provider.get(templateDetails.getLob()).getStringConstants("Processor_Group_Id"),
         serverUrl = provider.get(templateDetails.getLob()).getStringConstants("serverURL");
+		deleteIfTemplateExist(templateDetails,serverUrl);
 		try {
 			JSONObject templateData = templateHelper.getReplacebleValueAsJSON(templateDetails,extractor,loader);
 			TemplateKeys templateKey = getTemplateName(extractor.getType(),loader.getType());
@@ -74,10 +75,19 @@ public class NiFiTemplateService {
 			intanstiateTemplate(processGroupId,templateId,serverUrl,templateDetails.getLob(),id,false);
 			uploadServices(templateKey,templateData,processGroupId,serverUrl,templateDetails.getLob(),id);
 		} catch (Exception e) { 
-			e.printStackTrace();
+			log.error(e.getMessage(),e);
 			return e.getMessage();
 		}
 		return response;
+	}
+
+	private void deleteIfTemplateExist(TemplateDetails templateDetails, String serverUrl) {
+	  try {
+		if(!StringUtils.isEmpty(templateDetails.getTemplateId()))
+		   client.delete(serverUrl+FileUtils.getPathWithReplaceValue(NiFiApiURLConstants.TEMPLATE_DELETE, "id", templateDetails.getTemplateId()));
+	  }catch(Exception e) {
+		  log.error(e.getMessage(),e);
+	  }
 	}
 
 	private void intanstiateTemplate(String processGroupId, String templateId, String serverUrl, String lob, String templateDetailsId,Boolean isService) {
@@ -91,7 +101,7 @@ public class NiFiTemplateService {
 		client.setHeaders(headers);
 		client.post(serverUrl+FileUtils.getPathWithReplaceValue(NiFiApiURLConstants.TEMPLATE_INSTANTIATES, "id", processGroupId),json.toString());
 		if(!isService)
-		  templateDetailsService.updateTemplateDetails(new JSONObject().put("originY", originY), templateDetailsId);
+		  templateDetailsService.updateTemplateDetails(new JSONObject().put("originY", originY).put("active",true).put("templateId", templateId), templateDetailsId);
 	}
 
 	private Double getOriginY(String lob) {
@@ -107,7 +117,7 @@ public class NiFiTemplateService {
 				String templateId = templateHelper.getTemplateIdFromResponse(uploadTemplate(templateString,processGroupId,serverUrl));
 				intanstiateTemplate(processGroupId, templateId, serverUrl, lob, templateDetailsId,true);
 			} catch (Exception e) {
-				System.err.print(e.getMessage());
+				log.error(e.getMessage(),e);
 			}
 		}
 	}
@@ -136,7 +146,7 @@ public class NiFiTemplateService {
 				templateString = templateString.replaceFirst(argument, templateData.optString(argument.replaceAll(REPLACE, "")));
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			log.error(e.getMessage(),e);
 		}
         return templateString;
 	}

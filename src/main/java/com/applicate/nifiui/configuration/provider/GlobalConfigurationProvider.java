@@ -15,14 +15,14 @@ public class GlobalConfigurationProvider {
 	@Value("${lob's}")
 	private String runningClients;
 
-	@Value("${configPath}")
-	private String configPath;
+//	@Value("${configPath}")
+//	private String configPath;
 	
     private static final Map<String, ConfigurationProvider> CONFIGURATION_PROVIDERS = new HashMap<>();
     
     @PostConstruct
     private void init() {
-    	FileUtils.setCofigPath(configPath);
+    	//FileUtils.setCofigPath(configPath);
     	String[] clients = runningClients.split(",");
     	for (String client : clients) {
 			loadConfigurationProvider(client);

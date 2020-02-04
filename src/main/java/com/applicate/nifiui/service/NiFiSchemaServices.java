@@ -11,7 +11,10 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,6 +25,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class NiFiSchemaServices {
+
+	private Logger log = LoggerFactory.getLogger(NiFiSchemaServices.class);
 
 	private ObjectMapper om = new ObjectMapper();
 	
@@ -44,7 +49,7 @@ public class NiFiSchemaServices {
 				schemaDAO.save(schema);
 			}
 		} catch (InvalidFormatException | IOException e) {
-			e.printStackTrace();
+			log.error(e.getMessage(),e);
 		}
 		return "saved";
 	}
@@ -54,41 +59,52 @@ public class NiFiSchemaServices {
 		List<NiFiSchema> ls = new ArrayList<NiFiSchema>();
 		if(tableName!=null) {
 			ls = schemaDAO.getNiFiSchemaBasedOnSchemaNameAndLob(lob, tableName);
-		}else {
-		    ls = schemaDAO.getNiFiSchemaBasedOnLob(lob);
+		} else { 
+			ls = schemaDAO.getNiFiSchemaBasedOnLob(lob); 
 		}
-		return getSchemaData(ls);
+		return getJSONArray(ls).toString();
 	}
 
-	private String getSchemaData(List<NiFiSchema> ls) {
-		StringBuilder response = new StringBuilder("{");
-		String finalResponse=""; 
-		if(!ls.isEmpty()) {
-			String tempCollectionName=ls.get(0).getSchemaName();
-			response.append("\""+tempCollectionName+"\":[");
-			for (NiFiSchema niFiSchema : ls) {
-				if(niFiSchema.getSchemaName().equals(tempCollectionName))
-				    response.append("\""+niFiSchema.getColumnName()+"\",");
-				else {
-					response.replace(response.length()-1, response.length(), "");
-					tempCollectionName=niFiSchema.getSchemaName();
-					response.append("],\""+tempCollectionName+"\":[");
-					response.append("\""+niFiSchema.getColumnName()+"\",");
-				}
-			}
-			finalResponse = response.substring(0, response.length()-1);
-		}
-		return finalResponse+"]}";
-	}
+//	private String getSchemaData(List<NiFiSchema> ls) {
+//		StringBuilder response = new StringBuilder("{");
+//		String finalResponse=""; 
+//		if(!ls.isEmpty()) {
+//			String tempCollectionName=ls.get(0).getSchemaName();
+//			response.append("\""+tempCollectionName+"\":[");
+//			for (NiFiSchema niFiSchema : ls) {
+//				if(niFiSchema.getSchemaName().equals(tempCollectionName))
+//				    response.append("\""+niFiSchema.getColumnName()+"\",");
+//				else {
+//					response.replace(response.length()-1, response.length(), "");
+//					tempCollectionName=niFiSchema.getSchemaName();
+//					response.append("],\""+tempCollectionName+"\":[");
+//					response.append("\""+niFiSchema.getColumnName()+"\",");
+//				}
+//			}
+//			finalResponse = response.substring(0, response.length()-1);
+//		}
+//		return finalResponse+"]}";
+//	}
 
 	public String getTableNames(Optional<String> lob) {
 		String clientName = lob.isPresent()?lob.get():sessionServices.getLob();
-		StringBuilder response = new StringBuilder("{ \"TableNames\" : [");
-		for(String  tableName : schemaDAO.getTableNames(clientName)) {
-			response.append("\"").append(tableName).append("\",");
+		JSONArray newList = new JSONArray();
+		List<String> tableNames = schemaDAO.getTableNames(clientName);
+		for (String tableName : tableNames) {
+			newList.put(new JSONObject().put("schemaName", tableName));
 		}
-		response.deleteCharAt(response.lastIndexOf(","));
-		return response.append("]}").toString();
+		return newList.toString();
 	}
 
+	private JSONArray getJSONArray(List<NiFiSchema> ls) {
+		JSONArray newList = new JSONArray();
+		for (NiFiSchema niFiSchema :  ls) {
+			try {
+				newList.put(new JSONObject(om.writeValueAsString(niFiSchema)));
+			}catch (Exception e) {
+				log.error(e.getMessage(),e);
+			}
+		}
+		return newList;
+	}
 }

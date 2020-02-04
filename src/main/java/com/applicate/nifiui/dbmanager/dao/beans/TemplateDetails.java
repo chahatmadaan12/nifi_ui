@@ -11,11 +11,11 @@ public class TemplateDetails {
 	@Id
 	private String id;
 	
-	private String lob,extractorId,extractorTable,mapping,loaderId,loaderTable,niFiTemplateId,niFiParentProcessedGroup,templateId;
+	private String lob,extractorId,extractorTable,mapping,loaderId,loaderTable,templateId;
 	
 	private double originY;
 	
-	private boolean templateCreated,templateUploaded;
+	private boolean active;
 
 	public String getId() {
 		return id;
@@ -72,32 +72,6 @@ public class TemplateDetails {
 	public void setLoaderTable(String loaderTable) {
 		this.loaderTable = loaderTable;
 	}
-	
-
-	public String getNiFiTemplateId() {
-		return niFiTemplateId;
-	}
-
-	public void setNiFiTemplateId(String niFiTemplateId) {
-		this.niFiTemplateId = niFiTemplateId;
-	}
-
-	public String getNiFiParentProcessedGroup() {
-		return niFiParentProcessedGroup;
-	}
-
-	public void setNiFiParentProcessedGroup(String niFiParentProcessedGroup) {
-		this.niFiParentProcessedGroup = niFiParentProcessedGroup;
-	}
-
-	public boolean isTemplateCreated() {
-		return templateCreated;
-	}
-
-	public void setTemplateCreated(boolean templateCreated) {
-		this.templateCreated = templateCreated;
-	}
-	
 
 	public String getTemplateId() {
 		return templateId;
@@ -107,12 +81,16 @@ public class TemplateDetails {
 		this.templateId = templateId;
 	}
 
-	public boolean isTemplateUploaded() {
-		return templateUploaded;
+	public boolean isActive() {
+		return this.active;
 	}
 
-	public void setTemplateUploaded(boolean templateUploaded) {
-		this.templateUploaded = templateUploaded;
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+	
+	public boolean getActive() {
+		return this.active;
 	}
 
 	public double getOriginY() {
@@ -127,8 +105,7 @@ public class TemplateDetails {
 	public String toString() {
 		return "TemplateDetails [id=" + id + ", lob=" + lob + ", extractorId=" + extractorId + ", extractorTable="
 				+ extractorTable + ", mapping=" + mapping + ", loaderId=" + loaderId + ", loaderTable=" + loaderTable
-				+ ", niFiTemplateId=" + niFiTemplateId + ", niFiParentProcessedGroup=" + niFiParentProcessedGroup
-				+ ", templateCreated=" + templateCreated + ", templateUploaded=" + templateUploaded + ", originY=" + originY +"]";
+				+ ", Active=" + active + ", originY=" + originY +"]";
 	}
 
 }

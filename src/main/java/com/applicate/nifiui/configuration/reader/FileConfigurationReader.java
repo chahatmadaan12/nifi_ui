@@ -6,12 +6,16 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.applicate.nifiui.configuration.parser.ParserFactory;
 import com.applicate.utils.FileUtils;
 import com.applicate.utils.JSONUtils;
 
 public class FileConfigurationReader<T> extends AbstractConfigurationReader<T> implements ConfigurationReader<T> {
+
+	private Logger log = LoggerFactory.getLogger(FileConfigurationReader.class);
 
 	public FileConfigurationReader(String title, Class clazz, String filePath,boolean isGlobal,boolean isClient) {
 		super(title, clazz, filePath,isGlobal,isClient);
@@ -29,7 +33,7 @@ public class FileConfigurationReader<T> extends AbstractConfigurationReader<T> i
 		try {
 			return (T) ParserFactory.getParser(file).parse().get();
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error(e.getMessage(),e);
 		}
 		return (T) generateEmptyConfiguration(getType(), file);
 	}

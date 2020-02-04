@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 public class ConnectionVerifierFactoryService {
 	
 	public enum ConnectionType{
-		SFTP,MYSQL,MSSQL,CLICKHOUSE,POSTGRES
+		SFTP,MYSQL,MSSQL,CLICKHOUSE,POSTGRES,MONGO
 	}
 	
 	@Autowired
@@ -27,6 +27,8 @@ public class ConnectionVerifierFactoryService {
 		  return appContext.getBean(SQLConnectionVerifier.class);
 	   case CLICKHOUSE:
 		  return appContext.getBean(SQLConnectionVerifier.class);
+	   case MONGO:
+		  return appContext.getBean(MongoConnectionVerifier.class);
    	   default:
 			break;
 		}

@@ -28,12 +28,26 @@ public class ConnectionsController{
 		return new ResponseEntity<String>("Service Unavailable",HttpStatus.SERVICE_UNAVAILABLE);
 	}
 	
-	@RequestMapping(value= {"/getConnections/{id}","/getConnections"},method=RequestMethod.GET,produces = MediaType.TEXT_PLAIN_VALUE)
-	public String getConnections(@PathVariable(value="id")Optional<String> id){ 
-		String id1 = null;
-		if(id.isPresent())
-			id1=id.get();
-		return "{\"Connections\":"+connectionsControllerService.getConnections(id1,null).toString()+"}";
+	@RequestMapping(value= {"/getConnections/{lob}","/getConnections"},method=RequestMethod.GET,produces = MediaType.TEXT_PLAIN_VALUE)
+	public String getConnections(@PathVariable(value="id")Optional<String> id,@PathVariable(value="lob")Optional<String> lob){ 
+		String response = "";
+		if(id.isPresent()&&lob.isPresent())
+			response = /*"{\"Connections\":"+*/connectionsControllerService.getConnections(id.get(),lob.get()).toString()/*+"}"*/;
+		else if(id.isPresent()) 
+			response = /* "{\"Connections\":"+ */connectionsControllerService.getConnections(id.get(),null).toString()/*+"}"*/;
+		else if(lob.isPresent())
+			response = /* "{\"Connections\":"+ */connectionsControllerService.getConnections(null, lob.get()).toString()/* +"}" */;
+		else
+			response = /* "{\"Connections\":" +*/connectionsControllerService.getConnections(null, null).toString()/* +"}" */;
+		return response;
+	}
+	
+	@RequestMapping(value= {"/getVerifiedConnections/{lob}"},method=RequestMethod.GET,produces = MediaType.TEXT_PLAIN_VALUE)
+	public String getVerifiedConnections(@PathVariable(value="lob")Optional<String> lob){ 
+		String response = "";
+		if(lob.isPresent())
+			response = connectionsControllerService.getVerifiedConnections(lob.get()).toString();
+		return response;
 	}
 
 	@RequestMapping(value="/putConnection", method=RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.TEXT_PLAIN_VALUE)

@@ -4,6 +4,7 @@ sftp:
   param2: host
   param3: port
   param4: password
+  param5: filePath
 #mysql params mapping with actul prams
 mysql:
   param1: userName
@@ -11,6 +12,9 @@ mysql:
   param3: port
   param4: password
   param5: dbName
+  param6: dbUrl
+  param7: driverClassName
+  param8: driverLoaction
 #clickhouse params mapping with actul prams
 clickhouse:
   param1: userName
@@ -18,6 +22,9 @@ clickhouse:
   param3: port
   param4: password
   param5: dbName
+  param6: dbUrl
+  param7: driverClassName
+  param8: driverLoaction
 #mssql params mapping with actul prams
 mssql:
   param1: userName
@@ -25,6 +32,9 @@ mssql:
   param3: port
   param4: password
   param5: dbName
+  param6: dbUrl
+  param7: driverClassName
+  param8: driverLoaction
 #postgres params mapping with actul prams
 postgres:
   param1: userName
@@ -32,3 +42,6 @@ postgres:
   param3: port
   param4: password
   param5: dbName
+  param6: dbUrl
+  param7: driverClassName
+  param8: driverLoaction

@@ -3,6 +3,8 @@ package com.applicate.nifiui.mapper;
 import java.util.HashMap;
 
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +13,8 @@ import com.applicate.utils.JSONUtils;
 
 @Component
 public class ConnectionMapper {
+	
+	private static final Logger logger = LoggerFactory.getLogger(ConnectionMapper.class);
 
 	@Autowired
 	private GlobalConfigurationProvider configurationProvider;
@@ -41,6 +45,7 @@ public class ConnectionMapper {
 		HashMap<String, JSONObject> map = new HashMap<String, JSONObject>();
 		JSONObject connectionParam = configurationProvider.get(lob).getConnectionParam();
 		String[] types = JSONObject.getNames(connectionParam);
+		logger.warn(types+" "+connectionParam);
 		for (String type : types) {
 			map.put(type + UN_MAPPED, connectionParam.getJSONObject(type));
 			map.put(type + MAPPED,JSONUtils.getKeyAsValue(connectionParam.getJSONObject(type)));

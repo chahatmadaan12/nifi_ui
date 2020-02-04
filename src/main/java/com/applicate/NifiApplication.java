@@ -1,8 +1,5 @@
 package com.applicate;
 
-import java.util.Arrays;
-
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -11,9 +8,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import com.applicate.nifiui.config.Test;
-import com.applicate.nifiui.configuration.provider.GlobalConfigurationProvider;
-import com.applicate.nifiui.mapper.ConnectionMapper;
-import com.applicate.nifiui.service.ConnectionMapperService;
 
 @SpringBootApplication
 public class NifiApplication implements CommandLineRunner{

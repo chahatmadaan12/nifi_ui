@@ -1,12 +1,16 @@
 package com.applicate.nifiui.configuration.provider;
 
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.applicate.utils.JSONUtils;
 import com.applicate.utils.StringUtils;
 
 public abstract class AbstractConfigurationProvider implements ConfigurationProvider {
 
+	private Logger log = LoggerFactory.getLogger(AbstractConfigurationProvider.class);
+	
 	protected String lob;
 
     AbstractConfigurationProvider() {
@@ -31,7 +35,7 @@ public abstract class AbstractConfigurationProvider implements ConfigurationProv
 			}
 			return JSONUtils.safeClone(getGlobalJsonHolder(holderName).optJSONObject(key));
 		} catch (Exception e) {
-			//LOGGER.error("Exception happened while getting configuration for " + holderName + " with key " + key);
+			log.error("Exception happened while getting configuration for " + holderName + " with key " + key);
 		}
 		return null;
 	}

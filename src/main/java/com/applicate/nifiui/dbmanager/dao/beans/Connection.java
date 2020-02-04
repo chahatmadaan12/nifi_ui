@@ -9,7 +9,7 @@ public class Connection {
 	
 	@Id
 	private String id;
-	private String lob,type,param1,param2,param3,param4,param5,param6,param7,param8;
+	private String name,lob,type,param1,param2,param3,param4,param5,param6,param7,param8;
 	private boolean active;
 
 	public String getId() {
@@ -26,6 +26,14 @@ public class Connection {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getLob() {

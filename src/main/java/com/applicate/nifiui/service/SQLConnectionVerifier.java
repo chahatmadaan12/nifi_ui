@@ -1,11 +1,22 @@
 package com.applicate.nifiui.service;
 
-import static com.applicate.nifiui.config.constants.ConnectionConstants.*;
+import static com.applicate.nifiui.config.constants.ConnectionConstants.DATABASE;
+import static com.applicate.nifiui.config.constants.ConnectionConstants.DB_NAME;
+import static com.applicate.nifiui.config.constants.ConnectionConstants.DB_URL;
+import static com.applicate.nifiui.config.constants.ConnectionConstants.DRIVER_CLASS;
+import static com.applicate.nifiui.config.constants.ConnectionConstants.DRIVER_JAR_KEY;
+import static com.applicate.nifiui.config.constants.ConnectionConstants.HOST;
+import static com.applicate.nifiui.config.constants.ConnectionConstants.PASSWORD;
+import static com.applicate.nifiui.config.constants.ConnectionConstants.PORT;
+import static com.applicate.nifiui.config.constants.ConnectionConstants.TYPE;
+import static com.applicate.nifiui.config.constants.ConnectionConstants.USER_NAME;
 
 import java.sql.DriverManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.applicate.utils.StringUtils;
@@ -13,6 +24,8 @@ import com.jcraft.jsch.JSchException;
 
 @Component
 public class SQLConnectionVerifier implements ConnectionVerificationService {
+	
+	private Logger log = LoggerFactory.getLogger(SQLConnectionVerifier.class);
 
 	static {
 		try {
@@ -104,7 +117,7 @@ public class SQLConnectionVerifier implements ConnectionVerificationService {
 			response.put("verify", true);
 			return response;
 		}catch (Exception e) {
-			e.printStackTrace();
+			log.error("Exception happend while creating connection ",e);
 		}
 		return response.put("verify", false);
 	}

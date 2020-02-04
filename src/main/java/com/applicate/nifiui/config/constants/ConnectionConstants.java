@@ -17,4 +17,6 @@ public interface ConnectionConstants {
 	String DATABASE = "database";
 	String DRIVER_JAR_KEY = "driverJar";
 	String DRIVER_LOCATION = "driverLoaction";
+	String FILE_PATH = "filePath";
+	
 }

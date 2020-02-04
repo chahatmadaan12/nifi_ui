@@ -15,8 +15,8 @@ public interface ConnectionDAO extends CrudRepository<Connection, String>{
 	@Query("SELECT c from Connection c WHERE c.lob =:lob")
 	public List<Connection> getConnectionBasedOnLob(@Param("lob") String lob);
 	
-	@Query("SELECT c from Connection c WHERE c.active =:active")
-	public List<Connection> getConnectionBasedOnActive(@Param("active") String active);
+	@Query("SELECT c from Connection c WHERE  c.lob =:lob and c.active =true")
+	public List<Connection> getVerifiedConnection(@Param("lob") String lob);
 	
 	public default List<Connection> getConnectionIfPersent(ConnectionDAO dao,String id) {
 		List<Connection> ls = new ArrayList<Connection>();

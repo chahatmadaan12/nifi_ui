@@ -87,9 +87,10 @@ public class TemplateHelper {
 		              .put("Extractor_"+USER_NAME, extractJSON.getString(USER_NAME))
 		              .put("Extractor_"+PASSWORD, extractJSON.getString(PASSWORD))
 		              .put("extractorTable", templateDetails.getExtractorTable())
+		              .put("FilePath", extractJSON.getString(FILE_PATH))
 		              .put("Scheduling_Period", "3600")
 		              .put("mapping", templateDetails.getMapping())
-		              .put("mappingKey", templateDetails.getLoaderTable()+"_"+UUID.randomUUID());
+		              .put("mappingKey", templateDetails.getLoaderTable());
 	}
 
 	public JSONObject getDataWithActualParam(Connection connection) throws JSONException, JsonProcessingException {

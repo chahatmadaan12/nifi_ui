@@ -4,6 +4,7 @@ sftp:
   param2: host
   param3: port
   param4: password
+  param5: filePath
 #mysql params mapping with actul prams
 mysql:
   param1: userName
