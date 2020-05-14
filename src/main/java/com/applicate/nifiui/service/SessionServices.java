@@ -17,8 +17,9 @@ public class SessionServices {
 	private String defaultLob;
 
 	public Object get(String key) {
-		HttpSession session = getRequest().getSession();
-		return session.getAttribute(key);
+		HttpServletRequest request = getRequest();
+		HttpSession session = request.getSession();
+		return session.getAttribute(key)!=null?session.getAttribute(key):request.getParameter(key)!=null?request.getParameter(key):request.getHeader(key);
 	}
 	
 	public String getLob(){

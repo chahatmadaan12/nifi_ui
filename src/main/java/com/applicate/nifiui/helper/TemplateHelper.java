@@ -1,11 +1,10 @@
 package com.applicate.nifiui.helper;
 
-import static com.applicate.nifiui.config.constants.ConnectionConstants.*;
+import static com.applicate.nifiui.config.constants.ConnectionConstants.SQL_TYPE;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 
@@ -27,8 +26,13 @@ public class TemplateHelper {
 	private final Map<TemplateKeys,String> templateRegistry = new HashMap<TemplateKeys, String>();
 	
 	public enum TemplateKeys{
-		SFTP_TO_MYSQL("DBCPConnectionPoolService.xml","CSVReader.xml","JsonRecordSetWriter.xml"),
-		SFTP_TO_CLICKHOUSE("DBCPConnectionPoolService.xml","CSVReader.xml","JsonRecordSetWriter.xml");
+		SFTP_TO_MYSQL("DBCPConnectionPoolLoader.xml","CSVReader.xml","JsonRecordSetWriter.xml"),
+		SFTP_TO_CLICKHOUSE("DBCPConnectionPoolLoader.xml","CSVReader.xml","JsonRecordSetWriter.xml"),
+		CLICKHOUSE_TO_CLICKHOUSE("DBCPConnectionPoolExtractor.xml","AVROReader.xml","JsonRecordSetWriter.xml","DBCPConnectionPoolLoader.xml"),
+		MYSQL_TO_CLICKHOUSE("DBCPConnectionPoolExtractor.xml","AVROReader.xml","JsonRecordSetWriter.xml","DBCPConnectionPoolLoader.xml"),
+		CLICKHOUSE_TO_MYSQL("DBCPConnectionPoolExtractor.xml","AVROReader.xml","JsonRecordSetWriter.xml","DBCPConnectionPoolLoader.xml"),
+		MYSQL_TO_MYSQL("DBCPConnectionPoolExtractor.xml","AVROReader.xml","JsonRecordSetWriter.xml","DBCPConnectionPoolLoader.xml"),
+		MONGO_TO_CLICKHOUSE("DBCPConnectionPoolExtractor.xml","AVROReader.xml","JsonRecordSetWriter.xml","DBCPConnectionPoolLoader.xml");
 		
 		private String[] services;
 		
@@ -58,12 +62,17 @@ public class TemplateHelper {
 	@Autowired
 	private ConnectionMapperService connectionMapperService;
 	
-	private ObjectMapper om = new ObjectMapper();
+	private static ObjectMapper om = new ObjectMapper();
 	
 	@PostConstruct
 	public void loadTemplate() {
 		templateRegistry.put(TemplateKeys.SFTP_TO_MYSQL, "csvToSql.xml");
 		templateRegistry.put(TemplateKeys.SFTP_TO_CLICKHOUSE, "csvToSql.xml");
+		templateRegistry.put(TemplateKeys.CLICKHOUSE_TO_CLICKHOUSE, "sqltosql.xml");
+		templateRegistry.put(TemplateKeys.MYSQL_TO_CLICKHOUSE, "sqltosql.xml");
+		templateRegistry.put(TemplateKeys.CLICKHOUSE_TO_MYSQL, "sqltosql.xml");
+		templateRegistry.put(TemplateKeys.MYSQL_TO_MYSQL, "sqltosql.xml");
+		templateRegistry.put(TemplateKeys.MONGO_TO_CLICKHOUSE, "nosqltosql.xml");
 	}
 	
 	public String getTemplate(String templateKey) {
@@ -71,26 +80,33 @@ public class TemplateHelper {
 	}
    
 	public JSONObject getReplacebleValueAsJSON(TemplateDetails templateDetails, Connection extractor, Connection loader) throws JSONException, JsonProcessingException {
-		JSONObject extractJSON = getDataWithActualParam(extractor),loaderJSON = getDataWithActualParam(loader);
+	//JSONObject extractJSON = getDataWithActualParam(extractor),loaderJSON = getDataWithActualParam(loader);
+		JSONObject json = new JSONObject();
+		putConnection("Extractor_",extractor,json);
+		putConnection("Loader_",loader,json);
 		String processorGroupId = provider.get(loader.getLob()).getStringConstants("Processor_Group_Id");
-		return new JSONObject().put("Processor_Group_Id", processorGroupId)
+		return json.put("Processor_Group_Id", processorGroupId)
 		              .put("Template_Name", generateTemplateName(extractor.getType(),loader.getType(),templateDetails.getLoaderTable()))
-		              .put("Loader_"+DB_URL, loaderJSON.getString(DB_URL))
-		              .put("Loader_"+DRIVER_CLASS, loaderJSON.getString(DRIVER_CLASS))
-		              .put("Loader_"+DRIVER_LOCATION, loaderJSON.getString(DRIVER_LOCATION))
-		              .put("Loader_"+USER_NAME, loaderJSON.getString(USER_NAME))
-		              .put("Loader_"+PASSWORD, loaderJSON.getString(PASSWORD))
 		              .put("Query_Type", "INSERT")
-		              .put("loaderTable", templateDetails.getLoaderTable())
-		              .put("Extractor_"+HOST, extractJSON.getString(HOST))
-		              .put("Extractor_"+PORT, extractJSON.getString(PORT))
-		              .put("Extractor_"+USER_NAME, extractJSON.getString(USER_NAME))
-		              .put("Extractor_"+PASSWORD, extractJSON.getString(PASSWORD))
-		              .put("extractorTable", templateDetails.getExtractorTable())
-		              .put("FilePath", extractJSON.getString(FILE_PATH))
+		              .put("loaderTable", templateDetails.getLoaderTable())		              
+		              .put("extractorTable", templateDetails.getExtractorTable())		            
 		              .put("Scheduling_Period", "3600")
 		              .put("mapping", templateDetails.getMapping())
-		              .put("mappingKey", templateDetails.getLoaderTable());
+		              .put("mappingKey", templateDetails.getLoaderTable())
+		              .put("validation",templateDetails.getValidation());
+		         
+	}
+
+	private String getExtractorTable(Connection extractor, TemplateDetails templateDetails) {
+		return extractor.getType().equalsIgnoreCase("sftp")?extractor.getParam5()+"/"+templateDetails.getExtractorTable():templateDetails.getExtractorTable();
+	}
+
+	private void putConnection(String appendValue, Connection connection, JSONObject json) throws JsonProcessingException {
+		JSONObject connectionJson = new JSONObject(om.writeValueAsString(connection));
+		for (String key : JSONObject.getNames(connectionJson)) {
+			if(key.startsWith("param") || key.equals("type"))
+			json.put(appendValue+key, connectionJson.optString(key));
+		}
 	}
 
 	public JSONObject getDataWithActualParam(Connection connection) throws JSONException, JsonProcessingException {

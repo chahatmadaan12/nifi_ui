@@ -42,6 +42,14 @@ public class ConnectionsController{
 		return response;
 	}
 	
+	@RequestMapping(value= {"/getConnection/{id}"},method=RequestMethod.GET,produces = MediaType.TEXT_PLAIN_VALUE)
+	public String getConnection(@PathVariable(value="id")Optional<String> id){ 
+		String response = "";
+		if(id.isPresent())
+			response = connectionsControllerService.getConnections(id.get(),null).toString();
+		return response;
+	}
+	
 	@RequestMapping(value= {"/getVerifiedConnections/{lob}"},method=RequestMethod.GET,produces = MediaType.TEXT_PLAIN_VALUE)
 	public String getVerifiedConnections(@PathVariable(value="lob")Optional<String> lob){ 
 		String response = "";

@@ -15,8 +15,8 @@ public interface TemplateDetailsDAO extends CrudRepository<TemplateDetails, Stri
 	@Query("SELECT s from TemplateDetails s WHERE s.lob =:lob")
 	public List<TemplateDetails> getTemplateDetailsBasedOnLob(@Param("lob") String lob);
 	
-	@Query("SELECT max(s.originY) from TemplateDetails s WHERE s.lob =:lob")
-	public Double getMaxOriginY(@Param("lob") String lob);
+	@Query("SELECT max(s.originX) from TemplateDetails s WHERE s.lob =:lob")
+	public Double getMaxOriginX(@Param("lob") String lob);
 	
 	public default List<TemplateDetails> getTemplateDetailsIfPersent(TemplateDetailsDAO dao,String id) {
 		List<TemplateDetails> ls = new ArrayList<TemplateDetails>();

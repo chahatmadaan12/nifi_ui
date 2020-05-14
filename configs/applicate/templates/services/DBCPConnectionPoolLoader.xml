@@ -14,10 +14,16 @@
             </bundle>
             <comments></comments>
             <descriptors>
-                <entry>
-                    <key>Database Connection URL</key>
+               <entry>
+                    <key>dbcp-min-idle-conns</key>
                     <value>
-                        <name>Database Connection URL</name>
+                        <name>dbcp-min-idle-conns</name>
+                    </value>
+                </entry>
+                <entry>
+                    <key>Max Wait Time</key>
+                    <value>
+                        <name>Max Wait Time</name>
                     </value>
                 </entry>
                 <entry>
@@ -27,9 +33,15 @@
                     </value>
                 </entry>
                 <entry>
-                    <key>database-driver-locations</key>
+                    <key>dbcp-min-evictable-idle-time</key>
                     <value>
-                        <name>database-driver-locations</name>
+                        <name>dbcp-min-evictable-idle-time</name>
+                    </value>
+                </entry>
+                <entry>
+                    <key>Max Total Connections</key>
+                    <value>
+                        <name>Max Total Connections</name>
                     </value>
                 </entry>
                 <entry>
@@ -40,39 +52,47 @@
                     </value>
                 </entry>
                 <entry>
-                    <key>Database User</key>
+                    <key>dbcp-max-conn-lifetime</key>
                     <value>
-                        <name>Database User</name>
+                        <name>dbcp-max-conn-lifetime</name>
                     </value>
                 </entry>
-                <entry>
-                    <key>Password</key>
-                    <value>
-                        <name>Password</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>Max Wait Time</key>
-                    <value>
-                        <name>Max Wait Time</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>Max Total Connections</key>
-                    <value>
-                        <name>Max Total Connections</name>
-                    </value>
-                </entry>
-                <entry>
+                 <entry>
                     <key>Validation-query</key>
                     <value>
                         <name>Validation-query</name>
                     </value>
                 </entry>
                 <entry>
-                    <key>dbcp-min-idle-conns</key>
+                    <key>Database Connection URL</key>
                     <value>
-                        <name>dbcp-min-idle-conns</name>
+                        <name>Database Connection URL</name>
+                    </value>
+                </entry>
+                <entry>
+                    <key>dbcp-time-between-eviction-runs</key>
+                    <value>
+                        <name>dbcp-time-between-eviction-runs</name>
+                    </value>
+                </entry>
+              
+                
+                <entry>
+                    <key>Database User</key>
+                    <value>
+                        <name>Database User</name>
+                    </value>
+                </entry>
+                <entry>
+                    <key>dbcp-soft-min-evictable-idle-time</key>
+                    <value>
+                        <name>dbcp-soft-min-evictable-idle-time</name>
+                    </value>
+                </entry>
+                  <entry>
+                    <key>database-driver-locations</key>
+                    <value>
+                        <name>database-driver-locations</name>
                     </value>
                 </entry>
                 <entry>
@@ -82,91 +102,74 @@
                     </value>
                 </entry>
                 <entry>
-                    <key>dbcp-max-conn-lifetime</key>
+                    <key>Password</key>
                     <value>
-                        <name>dbcp-max-conn-lifetime</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>dbcp-time-between-eviction-runs</key>
-                    <value>
-                        <name>dbcp-time-between-eviction-runs</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>dbcp-min-evictable-idle-time</key>
-                    <value>
-                        <name>dbcp-min-evictable-idle-time</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>dbcp-soft-min-evictable-idle-time</key>
-                    <value>
-                        <name>dbcp-soft-min-evictable-idle-time</name>
+                        <name>Password</name>
                     </value>
                 </entry>
             </descriptors>
             <name>@@Template_Name@@</name>
             <persistsState>false</persistsState>
             <properties>
-                <entry>
-                    <key>Database Connection URL</key>
-                    <value>@@Loader_dbUrl@@</value>
-                </entry>
-                <entry>
-                    <key>Database Driver Class Name</key>
-                    <value>@@Loader_driverClassName@@</value>
-                </entry>
-                <entry>
-                    <key>database-driver-locations</key>
-                    <value>@@Loader_driverLoaction@@</value>
-                </entry>
-                <entry>
-                    <key>kerberos-credentials-service</key>
-                </entry>
-                <entry>
-                    <key>Database User</key>
-                    <value>@@Loader_userName@@</value>
-                </entry>
-                <entry>
-                    <key>Password</key>
-					<value>@@Loader_password@@</value>
+                 <entry>
+                    <key>dbcp-min-idle-conns</key>
+                    <value>0</value>
                 </entry>
                 <entry>
                     <key>Max Wait Time</key>
                     <value>500 millis</value>
                 </entry>
                 <entry>
-                    <key>Max Total Connections</key>
-                    <value>8</value>
-                </entry>
-                <entry>
-                    <key>Validation-query</key>
-                </entry>
-                <entry>
-                    <key>dbcp-min-idle-conns</key>
-                    <value>0</value>
-                </entry>
-                <entry>
-                    <key>dbcp-max-idle-conns</key>
-                    <value>8</value>
-                </entry>
-                <entry>
-                    <key>dbcp-max-conn-lifetime</key>
-                    <value>-1</value>
-                </entry>
-                <entry>
-                    <key>dbcp-time-between-eviction-runs</key>
-                    <value>-1</value>
+                    <key>Database Driver Class Name</key>
+                    <value>@@Loader_param7@@</value>
                 </entry>
                 <entry>
                     <key>dbcp-min-evictable-idle-time</key>
                     <value>30 mins</value>
                 </entry>
                 <entry>
+                    <key>Max Total Connections</key>
+                    <value>8</value>
+                </entry>
+                <entry>
+                    <key>kerberos-credentials-service</key>
+                </entry>
+                <entry>
+                    <key>dbcp-max-conn-lifetime</key>
+                    <value>-1</value>
+                </entry>
+                 <entry>
+                    <key>Validation-query</key>
+                </entry>
+                 <entry>
+                    <key>Database Connection URL</key>
+                    <value>@@Loader_param6@@</value>
+                </entry>
+                <entry>
+                    <key>dbcp-time-between-eviction-runs</key>
+                    <value>-1</value>
+                </entry>
+                <entry>
+                    <key>Database User</key>
+                    <value>@@Loader_param1@@</value>
+                </entry>
+                <entry>
                     <key>dbcp-soft-min-evictable-idle-time</key>
                     <value>-1</value>
                 </entry>
+                <entry>
+                    <key>database-driver-locations</key>
+                    <value>@@Loader_param8@@ </value>
+                </entry>
+               <entry>
+                    <key>dbcp-max-idle-conns</key>
+                    <value>8</value>
+                </entry> 
+                
+                <entry>
+                    <key>Password</key>
+					<value>@@Loader_param4@@</value>
+                </entry>            
             </properties>
             <state>ENABLED</state>
             <type>org.apache.nifi.dbcp.DBCPConnectionPool</type>

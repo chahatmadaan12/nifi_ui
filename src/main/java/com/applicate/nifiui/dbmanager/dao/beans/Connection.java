@@ -1,16 +1,26 @@
 package com.applicate.nifiui.dbmanager.dao.beans;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 @Entity
 @Table(name="Connection")
-public class Connection {
+public class Connection implements Serializable{
 	
 	@Id
 	private String id;
-	private String name,lob,type,param1,param2,param3,param4,param5,param6,param7,param8;
+	private String name,lob,type,param1,param2,param3,param4,param5,param6,param7,param8,param9;
 	private boolean active;
+
+	public String getParam9() {
+		return param9;
+	}
+
+	public void setParam9(String param9) {
+		this.param9 = param9;
+	}
 
 	public String getId() {
 		return id;

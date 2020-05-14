@@ -4,32 +4,6 @@
 	<groupId>@@Processor_Group_Id@@</groupId>
 	<name>@@Template_Name@@</name>
 	<snippet>
-	<connections>
-			<id>151e2046-2c18-231c-0000-000000000000</id>
-			<parentGroupId>5e4c548a-21bb-394b-0000-000000000000</parentGroupId>
-			<backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-			<backPressureObjectThreshold>10000</backPressureObjectThreshold>
-			<destination>
-				<groupId>5e4c548a-21bb-394b-0000-000000000000</groupId>
-				<id>b5616e67-9b32-3681-0000-000000000000</id>
-				<type>PROCESSOR</type>
-			</destination>
-			<flowFileExpiration>0 sec</flowFileExpiration>
-			<labelIndex>1</labelIndex>
-			<loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-			<loadBalancePartitionAttribute />
-			<loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-			<loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-			<name >Validation_to_Logs(JsonException,Failure)</name>
-			<selectedRelationships>JSONException</selectedRelationships>
-			<selectedRelationships>Failure</selectedRelationships>
-			<source>
-				<groupId>5e4c548a-21bb-394b-0000-000000000000</groupId>
-				<id>0538fbf3-ccc2-39e0-0000-000000000000</id>
-				<type>PROCESSOR</type>
-			</source>
-			<zIndex>0</zIndex>
-		</connections>
 		<connections>
 			<id>a4dd72bd-1504-3aa2-0000-000000000000</id>
 			<parentGroupId>5e4c548a-21bb-394b-0000-000000000000</parentGroupId>
@@ -46,7 +20,8 @@
 			<loadBalancePartitionAttribute />
 			<loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
 			<loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-			<name>Validation_TO_ETL</name>>
+			<name />
+			<selectedRelationships>failure</selectedRelationships>
 			<selectedRelationships>success</selectedRelationships>
 			<source>
 				<groupId>5e4c548a-21bb-394b-0000-000000000000</groupId>
@@ -74,6 +49,32 @@
 			<loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
 			<name />
 			<selectedRelationships>Success</selectedRelationships>
+			<source>
+				<groupId>5e4c548a-21bb-394b-0000-000000000000</groupId>
+				<id>0538fbf3-ccc2-39e0-0000-000000000000</id>
+				<type>PROCESSOR</type>
+			</source>
+			<zIndex>0</zIndex>
+		</connections>
+		<connections>
+			<id>151e2046-2c18-231c-0000-000000000000</id>
+			<parentGroupId>5e4c548a-21bb-394b-0000-000000000000</parentGroupId>
+			<backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+			<backPressureObjectThreshold>10000</backPressureObjectThreshold>
+			<destination>
+				<groupId>5e4c548a-21bb-394b-0000-000000000000</groupId>
+				<id>b5616e67-9b32-3681-0000-000000000000</id>
+				<type>PROCESSOR</type>
+			</destination>
+			<flowFileExpiration>0 sec</flowFileExpiration>
+			<labelIndex>1</labelIndex>
+			<loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+			<loadBalancePartitionAttribute />
+			<loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+			<loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+			<name >Validation_to_Logs(JsonException,Failure)</name>
+			<selectedRelationships>JSONException</selectedRelationships>
+			<selectedRelationships>Failure</selectedRelationships>
 			<source>
 				<groupId>5e4c548a-21bb-394b-0000-000000000000</groupId>
 				<id>0538fbf3-ccc2-39e0-0000-000000000000</id>
@@ -139,7 +140,7 @@
 			<backPressureObjectThreshold>10000</backPressureObjectThreshold>
 			<destination>
 				<groupId>5e4c548a-21bb-394b-0000-000000000000</groupId>
-				<id>c408934f-6d9b-32f9-0000-000000000000</id>
+				<id>70ca2da2-7623-375b-0000-000000000000</id>
 				<type>PROCESSOR</type>
 			</destination>
 			<flowFileExpiration>0 sec</flowFileExpiration>
@@ -148,7 +149,6 @@
 			<loadBalancePartitionAttribute></loadBalancePartitionAttribute>
 			<loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
 			<loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-			<name>FlowFile_TO_FetchSFTP</name>
 			<selectedRelationships>success</selectedRelationships>
 			<source>
 				<groupId>5e4c548a-21bb-394b-0000-000000000000</groupId>
@@ -158,7 +158,7 @@
 			<zIndex>0</zIndex>
 		</connections>
 		<connections>
-			<id>6ce02906-75f3-3d06-0000-000000000000</id>
+			<id>b206edf7-70ea-33d1-0000-000000000000</id>
 			<parentGroupId>5e4c548a-21bb-394b-0000-000000000000</parentGroupId>
 			<backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
 			<backPressureObjectThreshold>10000</backPressureObjectThreshold>
@@ -286,11 +286,11 @@
 			<loadBalancePartitionAttribute></loadBalancePartitionAttribute>
 			<loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
 			<loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-			<name>FetchSFTP_TO_ConvertRecords</name>
+
 			<selectedRelationships>success</selectedRelationships>
 			<source>
 				<groupId>5e4c548a-21bb-394b-0000-000000000000</groupId>
-				<id>c408934f-6d9b-32f9-0000-000000000000</id>
+				<id>70ca2da2-7623-375b-0000-000000000000</id>
 				<type>PROCESSOR</type>
 			</source>
 			<zIndex>0</zIndex>
@@ -336,13 +336,10 @@
 			<loadBalancePartitionAttribute></loadBalancePartitionAttribute>
 			<loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
 			<loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-			<name>FetchSFTP_TO_Logs(failure,notFound,permissionDenied)</name>
-			<selectedRelationships>comms.failure</selectedRelationships>
-			<selectedRelationships>not.found</selectedRelationships>
-			<selectedRelationships>permission.denied</selectedRelationships>
+			<selectedRelationships>failure</selectedRelationships>
 			<source>
 				<groupId>5e4c548a-21bb-394b-0000-000000000000</groupId>
-				<id>c408934f-6d9b-32f9-0000-000000000000</id>
+				<id>70ca2da2-7623-375b-0000-000000000000</id>
 				<type>PROCESSOR</type>
 			</source>
 			<zIndex>0</zIndex>
@@ -478,7 +475,7 @@
 			<parentGroupId>5e4c548a-21bb-394b-0000-000000000000</parentGroupId>
 			<position>
 				<x>781.9432516236226</x>
-				<y>790</y>
+				<y>800</y>
 			</position>
 			<bundle>
 				<artifact>nifi-processors-nar</artifact>
@@ -813,161 +810,133 @@
 			<type>org.apache.nifi.processors.standard.LogMessage</type>
 		</processors>
 		<processors>
-			<id>c408934f-6d9b-32f9-0000-000000000000</id>
+			<id>70ca2da2-7623-375b-0000-000000000000</id>
 			<parentGroupId>5e4c548a-21bb-394b-0000-000000000000</parentGroupId>
 			<position>
 				<x>779.1713610032444</x>
 				<y>200.21613002742492</y>
 			</position>
 			<bundle>
-				<artifact>nifi-standard-nar</artifact>
+				<artifact>nifi-mongodb-nar</artifact>
 				<group>org.apache.nifi</group>
-				<version>1.9.2</version>
+				<version>1.11.4</version>
 			</bundle>
 			<config>
 				<bulletinLevel>WARN</bulletinLevel>
-				<comments></comments>
+				<comments />
 				<concurrentlySchedulableTaskCount>1
 				</concurrentlySchedulableTaskCount>
 				<descriptors>
 					<entry>
-						<key>Hostname</key>
+						<key>mongo-client-service</key>
 						<value>
-							<name>Hostname</name>
-						</value>
-					</entry>
-					<entry>
-						<key>Port</key>
-						<value>
-							<name>Port</name>
-						</value>
-					</entry>
-					<entry>
-						<key>Username</key>
-						<value>
-							<name>Username</name>
-						</value>
-					</entry>
-					<entry>
-						<key>Password</key>
-						<value>
-							<name>Password</name>
-						</value>
-					</entry>
-					<entry>
-						<key>Private Key Path</key>
-						<value>
-							<name>Private Key Path</name>
-						</value>
-					</entry>
-					<entry>
-						<key>Private Key Passphrase</key>
-						<value>
-							<name>Private Key Passphrase</name>
-						</value>
-					</entry>
-					<entry>
-						<key>Remote File</key>
-						<value>
-							<name>Remote File</name>
-						</value>
-					</entry>
-					<entry>
-						<key>Completion Strategy</key>
-						<value>
-							<name>Completion Strategy</name>
-						</value>
-					</entry>
-					<entry>
-						<key>Move Destination Directory</key>
-						<value>
-							<name>Move Destination Directory</name>
-						</value>
-					</entry>
-					<entry>
-						<key>Create Directory</key>
-						<value>
-							<name>Create Directory</name>
-						</value>
-					</entry>
-					<entry>
-						<key>Disable Directory Listing</key>
-						<value>
-							<name>Disable Directory Listing</name>
-						</value>
-					</entry>
-					<entry>
-						<key>Connection Timeout</key>
-						<value>
-							<name>Connection Timeout</name>
-						</value>
-					</entry>
-					<entry>
-						<key>Data Timeout</key>
-						<value>
-							<name>Data Timeout</name>
-						</value>
-					</entry>
-					<entry>
-						<key>Send Keep Alive On Timeout</key>
-						<value>
-							<name>Send Keep Alive On Timeout</name>
-						</value>
-					</entry>
-					<entry>
-						<key>Host Key File</key>
-						<value>
-							<name>Host Key File</name>
-						</value>
-					</entry>
-					<entry>
-						<key>Strict Host Key Checking</key>
-						<value>
-							<name>Strict Host Key Checking</name>
-						</value>
-					</entry>
-					<entry>
-						<key>Use Compression</key>
-						<value>
-							<name>Use Compression</name>
-						</value>
-					</entry>
-					<entry>
-						<key>proxy-configuration-service</key>
-						<value>
-							<identifiesControllerService>org.apache.nifi.proxy.ProxyConfigurationService
+							<identifiesControllerService>org.apache.nifi.mongodb.MongoDBClientService
 							</identifiesControllerService>
-							<name>proxy-configuration-service</name>
+							<name>mongo-client-service</name>
 						</value>
 					</entry>
 					<entry>
-						<key>Proxy Type</key>
+						<key>Mongo URI</key>
 						<value>
-							<name>Proxy Type</name>
+							<name>Mongo URI</name>
 						</value>
 					</entry>
 					<entry>
-						<key>Proxy Host</key>
+						<key>Mongo Database Name</key>
 						<value>
-							<name>Proxy Host</name>
+							<name>Mongo Database Name</name>
 						</value>
 					</entry>
 					<entry>
-						<key>Proxy Port</key>
+						<key>Mongo Collection Name</key>
 						<value>
-							<name>Proxy Port</name>
+							<name>Mongo Collection Name</name>
 						</value>
 					</entry>
 					<entry>
-						<key>Http Proxy Username</key>
+						<key>ssl-context-service</key>
 						<value>
-							<name>Http Proxy Username</name>
+							<identifiesControllerService>org.apache.nifi.ssl.SSLContextService
+							</identifiesControllerService>
+							<name>ssl-context-service</name>
 						</value>
 					</entry>
 					<entry>
-						<key>Http Proxy Password</key>
+						<key>ssl-client-auth</key>
 						<value>
-							<name>Http Proxy Password</name>
+							<name>ssl-client-auth</name>
+						</value>
+					</entry>
+					<entry>
+						<key>json-type</key>
+						<value>
+							<name>json-type</name>
+						</value>
+					</entry>
+					<entry>
+						<key>use-pretty-printing</key>
+						<value>
+							<name>use-pretty-printing</name>
+						</value>
+					</entry>
+					<entry>
+						<key>mongo-charset</key>
+						<value>
+							<name>mongo-charset</name>
+						</value>
+					</entry>
+					<entry>
+						<key>Query</key>
+						<value>
+							<name>Query</name>
+						</value>
+					</entry>
+					<entry>
+						<key>mongo-query-attribute</key>
+						<value>
+							<name>mongo-query-attribute</name>
+						</value>
+					</entry>
+					<entry>
+						<key>Projection</key>
+						<value>
+							<name>Projection</name>
+						</value>
+					</entry>
+					<entry>
+						<key>Sort</key>
+						<value>
+							<name>Sort</name>
+						</value>
+					</entry>
+					<entry>
+						<key>Limit</key>
+						<value>
+							<name>Limit</name>
+						</value>
+					</entry>
+					<entry>
+						<key>Batch Size</key>
+						<value>
+							<name>Batch Size</name>
+						</value>
+					</entry>
+					<entry>
+						<key>results-per-flowfile</key>
+						<value>
+							<name>results-per-flowfile</name>
+						</value>
+					</entry>
+					<entry>
+						<key>mongo-date-format</key>
+						<value>
+							<name>mongo-date-format</name>
+						</value>
+					</entry>
+					<entry>
+						<key>get-mongo-send-empty</key>
+						<value>
+							<name>get-mongo-send-empty</name>
 						</value>
 					</entry>
 				</descriptors>
@@ -976,87 +945,66 @@
 				<penaltyDuration>30 sec</penaltyDuration>
 				<properties>
 					<entry>
-						<key>Hostname</key>
-						<value>@@Extractor_param2@@</value>
+						<key>mongo-client-service</key>
 					</entry>
 					<entry>
-						<key>Port</key>
-						<value>@@Extractor_param3@@</value>
+						<key>Mongo URI</key>
 					</entry>
 					<entry>
-						<key>Username</key>
-						<value>@@Extractor_param1@@</value>
+						<key>Mongo Database Name</key>
+						<value>@@Extractor_param5@@</value>
 					</entry>
 					<entry>
-						<key>Password</key>
-						<value>@@Extractor_param4@@</value>
+						<key>Mongo Collection Name</key>
+						<value>@@extractorTable@@</value>
 					</entry>
 					<entry>
-						<key>Private Key Path</key>
+						<key>ssl-context-service</key>
 					</entry>
 					<entry>
-						<key>Private Key Passphrase</key>
+						<key>ssl-client-auth</key>
+						<value>REQUIRED</value>
 					</entry>
 					<entry>
-						<key>Remote File</key>
-						<value>@@Extractor_param5@@/@@extractorTable@@</value>
+						<key>json-type</key>
+						<value>Extended</value>
 					</entry>
 					<entry>
-						<key>Completion Strategy</key>
-						<value>None</value>
-					</entry>
-					<entry>
-						<key>Move Destination Directory</key>
-					</entry>
-					<entry>
-						<key>Create Directory</key>
-						<value>false</value>
-					</entry>
-					<entry>
-						<key>Disable Directory Listing</key>
-						<value>false</value>
-					</entry>
-					<entry>
-						<key>Connection Timeout</key>
-						<value>30 sec</value>
-					</entry>
-					<entry>
-						<key>Data Timeout</key>
-						<value>30 sec</value>
-					</entry>
-					<entry>
-						<key>Send Keep Alive On Timeout</key>
+						<key>use-pretty-printing</key>
 						<value>true</value>
 					</entry>
 					<entry>
-						<key>Host Key File</key>
+						<key>mongo-charset</key>
+						<value>UTF-8</value>
 					</entry>
 					<entry>
-						<key>Strict Host Key Checking</key>
+						<key>Query</key>
+					</entry>
+					<entry>
+						<key>mongo-query-attribute</key>
+					</entry>
+					<entry>
+						<key>Projection</key>
+					</entry>
+					<entry>
+						<key>Sort</key>
+					</entry>
+					<entry>
+						<key>Limit</key>
+					</entry>
+					<entry>
+						<key>Batch Size</key>
+					</entry>
+					<entry>
+						<key>results-per-flowfile</key>
+					</entry>
+					<entry>
+						<key>mongo-date-format</key>
+						<value>yyyy-MM-dd'T'HH:mm:ss'Z'</value>
+					</entry>
+					<entry>
+						<key>get-mongo-send-empty</key>
 						<value>false</value>
-					</entry>
-					<entry>
-						<key>Use Compression</key>
-						<value>false</value>
-					</entry>
-					<entry>
-						<key>proxy-configuration-service</key>
-					</entry>
-					<entry>
-						<key>Proxy Type</key>
-						<value>DIRECT</value>
-					</entry>
-					<entry>
-						<key>Proxy Host</key>
-					</entry>
-					<entry>
-						<key>Proxy Port</key>
-					</entry>
-					<entry>
-						<key>Http Proxy Username</key>
-					</entry>
-					<entry>
-						<key>Http Proxy Password</key>
 					</entry>
 				</properties>
 				<runDurationMillis>0</runDurationMillis>
@@ -1065,18 +1013,14 @@
 				<yieldDuration>1 sec</yieldDuration>
 			</config>
 			<executionNodeRestricted>false</executionNodeRestricted>
-			<name>FetchSFTP</name>
+			<name>GetMongo</name>
 			<relationships>
 				<autoTerminate>false</autoTerminate>
-				<name>comms.failure</name>
+				<name>failure</name>
 			</relationships>
 			<relationships>
-				<autoTerminate>false</autoTerminate>
-				<name>not.found</name>
-			</relationships>
-			<relationships>
-				<autoTerminate>false</autoTerminate>
-				<name>permission.denied</name>
+				<autoTerminate>true</autoTerminate>
+				<name>original</name>
 			</relationships>
 			<relationships>
 				<autoTerminate>false</autoTerminate>
@@ -1084,14 +1028,14 @@
 			</relationships>
 			<state>STOPPED</state>
 			<style />
-			<type>org.apache.nifi.processors.standard.FetchSFTP</type>
+			<type>org.apache.nifi.processors.mongodb.GetMongo</type>
 		</processors>
 		<processors>
 			<id>c50e5924-dee8-3ca2-0000-000000000000</id>
 			<parentGroupId>5e4c548a-21bb-394b-0000-000000000000</parentGroupId>
 			<position>
 				<x>787.284264642714</x>
-                <y>1200</y>
+				<y>1200</y>
 			</position>
 			<bundle>
 				<artifact>nifi-standard-nar</artifact>
@@ -1218,7 +1162,7 @@
 			<parentGroupId>5e4c548a-21bb-394b-0000-000000000000</parentGroupId>
 			<position>
 				<x>781.474799776118</x>
-				<y>970</y>
+				<y>1000</y>
 			</position>
 			<bundle>
 				<artifact>nifi-standard-nar</artifact>

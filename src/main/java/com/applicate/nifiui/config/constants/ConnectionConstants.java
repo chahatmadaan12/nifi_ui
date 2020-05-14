@@ -6,6 +6,7 @@ import java.util.List;
 public interface ConnectionConstants {
 	
 	List<String> SQL_TYPE= Arrays.asList("MYSQL","CLICKHOUSE","MSSQL");
+	List<String> connectionServices= Arrays.asList("DBCPConnectionPoolLoader","DBCPConnectionPoolExtractor");
     String USER_NAME = "userName";
     String DB_NAME = "dbName";
 	String PASSWORD = "password";
@@ -18,5 +19,8 @@ public interface ConnectionConstants {
 	String DRIVER_JAR_KEY = "driverJar";
 	String DRIVER_LOCATION = "driverLoaction";
 	String FILE_PATH = "filePath";
+	String QUERY="query";
+	String DBNAME="dbName";
+	
 	
 }

@@ -2,6 +2,7 @@ package com.applicate.utils;
 
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -90,5 +91,12 @@ public class JSONUtils {
         }
         return mergeJson;
     }
+
+	public static JSONArray getJSONArray(String json) {
+		if (json.startsWith("[")) {
+			return new JSONArray(json.toString());
+		}
+		return new JSONArray().put(json);
+	}
     
 }

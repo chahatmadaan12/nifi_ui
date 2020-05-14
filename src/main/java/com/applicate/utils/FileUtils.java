@@ -105,7 +105,6 @@ public class FileUtils {
 
 	public static String getAbsolutePath(String relativePath) {
 		String configLocation = StringUtils.isEmpty(configPath1)?System.getenv(CONFIG_LOCATION):configPath1;
-		logger.warn(configLocation);
 		return configLocation+relativePath;
 	}
 

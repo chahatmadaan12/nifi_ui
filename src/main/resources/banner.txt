@@ -1,0 +1,12 @@
+
+${AnsiColor.2}    $$$$      $$ #### %%%%%%%%% @@@@
+${AnsiColor.2}    $$ $$     $$  ##  %%         @@ 
+${AnsiColor.2}    $$  $$    $$  ##  %%         @@ 
+${AnsiColor.2}    $$   $$   $$  ##  %%%%%%%    @@
+${AnsiColor.2}    $$    $$  $$  ##  %%         @@
+${AnsiColor.2}    $$     $$ $$  ##  %%         @@
+${AnsiColor.2}    $$      $$$$ #### %%        @@@@
+${AnsiColor.6}                                Applicate AI
+${AnsiColor.0}==================================================
+${AnsiColor.6}:: Spring Boot ::                 (v${spring-boot.version})
+${AnsiColor.0}==================================================

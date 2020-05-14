@@ -5,6 +5,6 @@ clickhouse_driver_jar_name : ""
 postgres_driver_jar_name : ""
 
 # processor-group-id for client
-Processor_Group_Id : "ae265054-016f-1000-f1ae-5ef6d3b0f115"
+Processor_Group_Id : "e4594710-0171-1000-beca-5ca2813e28fb"
 Global_Processor_Group_Id : "28065892-016c-1000-5653-27df94e6088b"
-serverURL : "http://164.52.195.85:8080"
+serverURL : "http://101.53.156.70:8181"

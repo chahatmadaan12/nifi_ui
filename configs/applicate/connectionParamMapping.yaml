@@ -45,3 +45,9 @@ postgres:
   param6: dbUrl
   param7: driverClassName
   param8: driverLoaction
+mongo:
+  param1: userName
+  param2: host
+  param3: port
+  param4: password
+  param5: dbName

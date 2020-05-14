@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.swing.text.StyleConstants.CharacterConstants;
+
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import com.applicate.nifiui.config.constants.ConnectionConstants;
 import com.applicate.nifiui.config.constants.NiFiApiURLConstants;
 import com.applicate.nifiui.configuration.provider.GlobalConfigurationProvider;
 import com.applicate.nifiui.dbmanager.dao.beans.Connection;
@@ -33,6 +36,7 @@ import com.applicate.nifiui.helper.TemplateHelper.TemplateKeys;
 import com.applicate.utils.FileUtils;
 import com.applicate.utils.RestClient;
 import com.applicate.utils.StringUtils;
+import com.applicate.utils.XmlHepler;
 
 @Service
 public class NiFiTemplateService {
@@ -91,9 +95,9 @@ public class NiFiTemplateService {
 	}
 
 	private void intanstiateTemplate(String processGroupId, String templateId, String serverUrl, String lob, String templateDetailsId,Boolean isService) {
-		Double originY = isService ? 0.0 : getOriginY(lob);
-		JSONObject json = new JSONObject().put("originX", 0.0)
-				.put("originY", originY)
+		Double originX = isService ? 0.0 : getOriginX(lob);
+		JSONObject json = new JSONObject().put("originX", originX)
+				.put("originY", 0.0)
 				.put("templateId", templateId)
 				.put("disconnectedNodeAcknowledged", true);
 		Map<String, String> headers = new HashMap<String, String>();
@@ -101,17 +105,17 @@ public class NiFiTemplateService {
 		client.setHeaders(headers);
 		client.post(serverUrl+FileUtils.getPathWithReplaceValue(NiFiApiURLConstants.TEMPLATE_INSTANTIATES, "id", processGroupId),json.toString());
 		if(!isService)
-		  templateDetailsService.updateTemplateDetails(new JSONObject().put("originY", originY).put("active",true).put("templateId", templateId), templateDetailsId);
+		  templateDetailsService.updateTemplateDetails(new JSONObject().put("originX", originX).put("active",true).put("templateId", templateId), templateDetailsId);
 	}
 
-	private Double getOriginY(String lob) {
-		Double maxOriginY = templateDetailsDAO.getMaxOriginY(lob);
+	private Double getOriginX(String lob) {
+		Double maxOriginY = templateDetailsDAO.getMaxOriginX(lob);
 		return maxOriginY+1500.00;
 	}
 
 	private void uploadServices(TemplateKeys templateKey,JSONObject templateData, String processGroupId, String serverUrl, String lob, String templateDetailsId) {
 		for(String service : templateKey.getServices()) {
-			setServiceTemplateName(templateData,service,templateKey.getSqlType());
+			setServiceTemplateName(templateData,service);
 			String templateString = prepareTemplate("services/"+service,templateData);
 			try {
 				String templateId = templateHelper.getTemplateIdFromResponse(uploadTemplate(templateString,processGroupId,serverUrl));
@@ -122,11 +126,17 @@ public class NiFiTemplateService {
 		}
 	}
 
-	private void setServiceTemplateName(JSONObject templateData, String service, String sqlType) {
+	private void setServiceTemplateName(JSONObject templateData, String service) {
        String serviceTemplateName = service.split("\\.")[0];
-       if(sqlType!=null)
-    	   serviceTemplateName+="("+sqlType+")";
-		templateData.put("Template_Name", serviceTemplateName);	
+       if(ConnectionConstants.connectionServices.contains(serviceTemplateName)) {
+    	   if(serviceTemplateName.contains("Extractor")) {
+    		  serviceTemplateName+="("+templateData.optString("Extractor_param6")+")";
+    		  templateData.put("Template_Name", serviceTemplateName);
+    	   }else if(serviceTemplateName.contains("Loader")) {
+    		  serviceTemplateName+="("+templateData.optString("Loader_param6")+")";
+     		  templateData.put("Template_Name", serviceTemplateName);
+    	   }
+       }
 	}
 
 	private TemplateKeys getTemplateName(String type1, String type2) {
@@ -143,11 +153,12 @@ public class NiFiTemplateService {
 			Matcher matcher = compile.matcher(templateString);
 			while(matcher.find()) {
 				String argument = matcher.group();
-				templateString = templateString.replaceFirst(argument, templateData.optString(argument.replaceAll(REPLACE, "")));
+				templateString = templateString.replace(argument, XmlHepler.replaceSpecialCharacter(templateData.optString(argument.replaceAll(REPLACE, ""))));
 			}
 		} catch (IOException e) {
 			log.error(e.getMessage(),e);
 		}
+        System.out.println(templateString);
         return templateString;
 	}
 	
@@ -170,6 +181,11 @@ public class NiFiTemplateService {
         bw.write(templateString);
         bw.close();
 		return file;
+	}
+	
+	public static void main(String[] args) {
+    String replaceAll = "{\"HEADER-VALIDATION\":{\"ALLOW-EXTRA-HEADERS\":true,\"HEADERS\":[\"size\",\"subCategory\"]},\"CONTENT-VALIDATION\":{\"size\":{\"nullable\":\"true\",\"unique\":\"false\",\"regex\":{\"message\":\"size should not be\",\"regex\":\"^[a-zA-Z0-9,]*$\"}},\"subCategory\":{\"nullable\":\"false\",\"unique\":\"false\",\"regex\":{\"message\":\"abc\",\"regex\":\"^[a-zA-Z0-9,]*$\"}}}}".replace("$", "$");
+	System.out.println(replaceAll);
 	}
 	
 }

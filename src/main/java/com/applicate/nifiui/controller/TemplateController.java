@@ -21,5 +21,5 @@ public class TemplateController {
 	public @ResponseBody String uploadTemplate(@PathVariable(name = "id")String id) {
 		return niFiTemplateService.createAndUpload(id);
 	}
-
+	
 }
